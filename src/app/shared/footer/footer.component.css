@@ -1,0 +1,41 @@
+.cs-footer {
+    background-image: linear-gradient(to right,rgba(37,25,25,0.75),rgba(37,25,25,0.75)),url('/assets/img/lapaycha/fondo-hamburguesas-footer.webp');
+    background-repeat: repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: scroll;
+}
+
+.footer__copyright{
+    color: rgba(255,255,255,0.6);
+}
+
+.footer__title{
+    font-size: 1.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    letter-spacing: 1px;
+    -webkit-text-stroke: 0.1px #ffffff;
+}
+
+.footer__opciones {
+    display: flex;
+    justify-content: center;
+}
+
+.footer__opciones-btn-social{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    color: black;
+    background-color: white;
+}
+
+.footer__opciones-btn-social:hover {
+    color: white;
+    background-color: #D90700;
+}

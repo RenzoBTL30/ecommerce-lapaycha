@@ -1,0 +1,139 @@
+.cs-page-wrapper {
+    background-color: #F7F3F5;
+}
+
+.portada {
+    background-position-y: bottom;
+}
+
+.btn-go-carta{
+    background-color: #fa393f;
+    border-color: #fa393f;
+    color: white;
+}
+
+.btn-go-carta:hover{
+    background-color: #C42227;
+    border-color: #C42227;
+}
+
+.carta {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 34px;
+}
+
+.carta__category {
+    min-width: 200px;
+    max-width: 200px;
+    max-height: 200px;
+    min-height: 200px;
+    position: relative;
+    border-radius: 20px;
+    box-shadow: 0px 0px 13px -6px rgba(0,0,0,.5);
+}
+
+.carta__category-image {
+    border-radius: 20px;
+    width: 100%; /* Establece el ancho al 100% del contenedor */
+    height: 100%; /* Establece la altura al 100% del contenedor */
+    object-fit: cover;
+    background-size: cover;
+}
+
+.carta__category-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.77); /* Opcional: Agrega un fondo semitransparente detrás del texto */
+    font-weight: 900;
+    font-family: 'Lato', sans-serif;
+    color: black; /* Cambia el color del texto según tus preferencias */
+    padding: 5px; /* Opcional: Añade relleno alrededor del texto */
+    border-bottom-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.logo-loader {
+    animation: loader 1s infinite;
+}
+
+@keyframes loader {
+    0% {
+        transform: scale(0.8);
+    }
+    50% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0.8);
+    }
+}
+
+.section__contacto {
+    background-image: linear-gradient(to right, rgba(43, 22, 27, 0.75), rgba(43, 22, 27, 0.75)),url('/assets/img/lapaycha/portada2-comida.webp');
+    background-repeat: repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: scroll;
+    position: relative;
+}
+
+.contact__options {
+    display: flex;
+}
+
+.contact__options-contacts {
+    display: flex;
+    gap: 80px;
+    color: white;
+}
+
+.contact__options-address, .contact__options-celular, .contact__options-horario {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.cxi-map-pin-solid, .cxi-iphone, .cxi-clock {
+    font-size: 3.5rem;
+}
+
+.contact__options-address-title, .contact__options-celular-title, .contact__options-horario-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.contact__options-address-desc {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact__options-horario-desc {
+    text-align: left;
+}
+
+.btn-whatsapp {
+    background-color: #19780e;
+    border-color: #19780e;
+    border-radius: 50px;
+    color: white;
+
+}
+
+.btn-whatsapp:hover{
+    background-color: #125b0a;
+    border-color: #125b0a;
+}
+
+@media screen and (max-width: 875px) { /* 0 - 875px */
+    .contact__options-contacts {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+}

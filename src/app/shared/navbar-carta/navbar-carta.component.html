@@ -1,0 +1,19 @@
+<nav class="container__categoria navbar navbar-expand-lg navbar-light bg-light mb-5 py-3">
+    <div *ngIf="isLoading" class="box-spinner">
+        <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div style="margin: 0 auto;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <ul class="navbar-nav container__categoria-lista" style="--bs-scroll-height: 400px;">
+            <li class="container__categoria-item" *ngFor="let c of categorias" (click)="seleccionarCategoria(c.id_categoria)">
+                <span [ngClass]="{'categoria-seleccionada': c.id_categoria === categoriaSeleccionadaId}">{{c.nombre}}</span>
+            </li>
+        </ul>
+    </div>
+</nav>

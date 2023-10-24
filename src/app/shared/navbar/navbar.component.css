@@ -1,0 +1,55 @@
+.navbar {
+    background-color: #151111;
+}
+
+.header-tipografia {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    color: white !important;
+}
+
+a:hover {
+    color: #C42227 !important;
+}
+
+.cxi-cart {
+    color: #EF4D48;
+    padding-top: 2px;
+    font-size: 22px;
+}
+
+.cart-button{
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    max-width: 140px;
+    gap: 15px;
+    position: relative;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border: 2px #EF4D48 solid;
+    color: #EF4D48;
+}
+
+
+.cart-icon {
+    display: flex;
+    align-items: center;
+}
+
+.cart-button__cantidad{
+    max-width: 50px;
+}
+
+.badge {
+    background-color: #EF4D48;
+    color: white;
+    border-radius: 50%;
+    padding: 6px 5px;
+    font-size: 12px;
+    min-width: 25px;
+    font-weight: bold;
+    overflow: hidden; /* Recorta el contenido si es necesario */
+}

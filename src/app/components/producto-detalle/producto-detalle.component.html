@@ -1,0 +1,94 @@
+<!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="cs-page-wrapper">
+        
+        <!-- Breadcrumb -->
+        <nav class="bg-secondary mb-3" aria-label="breadcrumb">
+          <div class="container">
+            <ol class="breadcrumb breadcrumb-alt mb-0">
+              <li class="breadcrumb-item">
+                <a href="index.html"><i class="cxi-home"></i></a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="shop-catalog.html">Women</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="shop-catalog.html">Clothes</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">Basic hooded sweatshirt in pink</li>
+            </ol>
+          </div>
+        </nav>
+  
+        <!-- Single product -->
+        <section class="container py-md-5 py-5 mb-2">
+          <div class="row">
+            <div class="col-md-6 mb-md-0 mb-4">
+              <!-- Product gallery -->
+              <div class="product__image mx-auto" style="max-width: 570px;">
+                  <img [src]="producto.imagen ? producto.imagen : 'assets/img/no-image.png'" alt="Product image">
+              </div>
+            </div>
+            <div class="col-md-6 pl-xl-5">
+              <h3 class="mb-2 mb-md-0">{{producto?.nombre}}</h3>
+              <div class="d-sm-flex align-items-center justify-content-between mb-4">
+  
+                <!-- Price -->
+                <div class="product__price d-flex align-items-center mb-sm-0 mb-4 mt-3">
+                  <span class="h3 d-inline-block mb-0 text-danger">S/ {{producto?.precio}}</span>
+                </div>
+              </div>
+  
+              <!-- Ordering form -->
+              <form class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="pink">Color</label>
+                    <div class="d-flex align-items-middle">
+                      <div class="custom-control cs-custom-color-option cs-custom-color-option-sm custom-control-inline mr-2 mb-2">
+                        <input class="custom-control-input" type="radio" name="color" id="pink" value="Pink" data-label="colorOptionText" checked>
+                        <label class="cs-custom-option-label" for="pink">
+                          <span class="cs-color-swatch" style="background-color: #e0aea2;"></span>
+                        </label>
+                      </div>
+                      <div class="custom-control cs-custom-color-option cs-custom-color-option-sm custom-control-inline mr-2 mb-2">
+                        <input class="custom-control-input" type="radio" name="color" id="blue" value="Blue" data-label="colorOptionText">
+                        <label class="cs-custom-option-label" for="blue">
+                          <span class="cs-color-swatch" style="background-color: #c0dded;"></span>
+                        </label>
+                      </div>
+                      <div class="custom-control cs-custom-color-option cs-custom-color-option-sm custom-control-inline mr-2 mb-2">
+                        <input class="custom-control-input" type="radio" name="color" id="yellow" value="Yellow" data-label="colorOptionText">
+                        <label class="cs-custom-option-label" for="yellow">
+                          <span class="cs-color-swatch" style="background-color: #fede41;"></span>
+                        </label>
+                      </div>
+                      <span class="d-inline-block pl-2 text-muted" id="colorOptionText">Pink</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-8 order-sm-1 order-2">
+                  <div class="form-group">
+                    <label for="size">Size</label>
+                    <select class="form-control custom-select" id="size">
+                      <option>Please select</option>
+                      <option>Option item 1</option>
+                      <option>Option item 2</option>
+                      <option>Option item 3</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="col-lg-6 order-lg-4 order-4">
+                  <button class="btn btn-block btn-primary">
+                    <i class="cxi-cart mr-2"></i>
+                    Agregar al carrito
+                  </button>
+                </div>
+               
+              </form>
+
+            </div>
+          </div>
+        </section>
+</main>

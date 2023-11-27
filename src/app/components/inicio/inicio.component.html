@@ -1,3 +1,5 @@
+<app-navbar></app-navbar>
+
 <main class="cs-page-wrapper">
     <section class="cs-carousel cs-controls-onhover">
         <div class="cs-carousel-inner" data-carousel-options=''>
@@ -10,7 +12,7 @@
                   <h2 class="display-2 mb-lg-3 pb-1 cs-from-left text-white">La Paycha</h2>
                   <h3 class="font-size-xl cs-from-left cs-delay-1 text-white">Ahora puedes hacer tu pedido online</h3>
                   <div class="mb-4 cs-scale-up cs-delay-2">
-                    <a href="#" class="btn btn-go-carta btn-lg">Ir a la Carta</a>
+                    <a [routerLink]="['/carta/2']" class="btn btn-go-carta btn-lg">Ir a la Carta</a>
                   </div>
                 </div>
               </div>
@@ -24,142 +26,171 @@
     <!-- New arrivals -->
     <section class="container-fluid px-xl-grid-gutter mt-5 mb-3 mb-sm-4 mt-md-0 mb-lg-5 py-5 py-lg-6">
         <div class="text-center mb-5 pb-2">
+
+          <h2 class="h1 mb-6">Nuestras promociones</h2>
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4" data-filters-columns>
+            <!-- Item -->
+            <div class="col pb-sm-2 mb-grid-gutter" *ngFor="let p of productos">
+              <a [routerLink]="['/producto', p.id_producto]" style="text-decoration: none;">
+                <div class="card mx-auto">
+                  <div class="card-product-img card-img-top">
+                      <img [src]="p?.imagen ? p.imagen : 'assets/img/no-image.png'" alt="Product image">
+                  </div>
+                  <div class="card-body pb-1">
+                    <h3 class="card-product-title mb-2">
+                      <span>{{p.nombre}}</span>
+                    </h3>
+                    <div class="card-product-price d-flex align-items-center">
+                      <span class="h5 d-inline-block mb-0">S/ {{p.precio | number:'1.2-2'}}</span>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <button type="button" class="btn btn-primary btn-view-product btn-block">
+                      Ver más
+                    </button>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <!----
           <h2 class="h1 mb-6">Nuestra carta</h2>
           <div class="carta">
-            <div class="bg-size-cover carta__category">
+            
+            <div [routerLink]="['/carta/2']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/wings.webp" alt="">
               <div class="carta__category-title">
                 <span>ALITAS</span>
               </div>
             </div>
 
-            <div class="carta__category">
+            <div [routerLink]="['/carta/3']" class="carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/Broaster.webp" alt="">
               <div class="carta__category-title">
                 <span>BROASTER</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/14']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/hamburguer.webp" alt="">
               <div class="carta__category-title">
                 <span>HAMBURGUESAS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/7']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/Salchipapon.webp" alt="">
               <div class="carta__category-title">
                 <span>SALCHIPAPAS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/6']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/tacos.webp" alt="">
               <div class="carta__category-title">
                 <span>TACOS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/19']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/sandwich.webp" alt="">
               <div class="carta__category-title">
                 <span>SANDWICHS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/9']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/papas.webp" alt="">
               <div class="carta__category-title">
                 <span>PAPAS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/1']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/bebidas.webp" alt="">
               <div class="carta__category-title">
                 <span>GASEOSAS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/10']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/cremolada.webp" alt="">
               <div class="carta__category-title">
                 <span>CREMOLADAS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/15']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/helados.webp" alt="">
               <div class="carta__category-title">
                 <span>HELADOS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/11']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/frappe.webp" alt="">
               <div class="carta__category-title">
                 <span>FRAPPES</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/18']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/jugos.webp" alt="">
               <div class="carta__category-title">
                 <span>JUGOS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/12']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/jugos-combinados.webp" alt="">
               <div class="carta__category-title">
                 <span>JUGOS COMBINADOS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/17']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/jugos-con-leche.webp" alt="">
               <div class="carta__category-title">
                 <span>JUGOS CON LECHE</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/16']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/jugos-de-temporada.webp" alt="">
               <div class="carta__category-title">
                 <span>JUGOS DE TEMPORADA</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/13']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/Frozen.webp" alt="">
               <div class="carta__category-title">
                 <span>FROZEN</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/8']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/refresco.webp" alt="">
               <div class="carta__category-title">
                 <span>REFRESCOS</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/4']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/cafe.webp" alt="">
               <div class="carta__category-title">
                 <span>COFFE</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/5']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/infusion_resized.webp" alt="">
               <div class="carta__category-title">
                 <span>INFUSIONES</span>
               </div>
             </div>
 
-            <div class="bg-size-cover carta__category">
+            <div [routerLink]="['/carta/20']" class="bg-size-cover carta__category">
               <img class="carta__category-image" src="../../assets/img/lapaycha/categorias/promo.webp" alt="">
               <div class="carta__category-title">
                 <span>PROMOCIONES</span>
@@ -167,6 +198,7 @@
             </div>
             
           </div>
+          --->
         </div>
     </section>
 

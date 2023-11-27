@@ -1,0 +1,174 @@
+<div class="d-flex align-items-center justify-content-between mb-4 pb-sm-2">
+    <h1 class="h2 mb-0">Detalle del pedido</h1>
+    <div class="form-inline">
+        <button [routerLink]="['/cuenta/pedidos']" class="btn btn-primary btn-lg">&nbsp;Regresar&nbsp;</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-4">
+      <div class="card card-body py-3 box-shadow ">
+        <div class="row">
+          <div class="col-lg-6">
+            <table class="table mb-0">
+              <tbody>
+                <tr>
+                  <th class="border-0 py-2 pl-0">Código:</th>
+                  <td class="border-0 py-2 px-0 text-muted">{{orden.codigo}}</td>
+                </tr>
+                <tr>
+                  <th class="border-0 py-2 pl-0">Fecha del pedido:</th>
+                  <td class="border-0 py-2 px-0 text-muted">{{formatearFecha(orden.fecha_orden)}}</td>
+                </tr>
+                <tr>
+                  <th class="border-0 py-2 pl-0">Forma de entrega:</th>
+                  <td class="border-0 py-2 px-0 text-muted">{{orden.forma_entrega}}</td>
+                </tr>
+
+                <ng-container *ngIf="orden.id_forma_entrega == '2'">
+                    <tr>
+                        <th class="border-0 py-2 pl-0">Direccion:</th>
+                        <td class="border-0 py-2 px-0 text-muted">{{orden.direccion == null ? '' : orden.direccion.direccion}}</td>
+                    </tr>
+    
+                    <tr>
+                        <th class="border-0 py-2 pl-0">Referencia:</th>
+                        <td class="border-0 py-2 px-0 text-muted">{{orden.direccion == null ? '' : orden.direccion.lugar}}</td>
+                    </tr>
+                </ng-container>
+                
+                <tr>
+                    <th class="border-0 py-2 pl-0">Método de <hr style="border: 0;"> pago:</th>
+                    <td class="border-0 py-2 px-0 text-muted">{{orden.metodo_pago}}</td>
+                </tr>
+                <ng-container *ngIf="orden.id_metodo_pago == '1'">
+                    <tr>
+                        <th class="border-0 py-2 pl-0">Billete de <hr style="border: 0;"> pago:</th>
+                        <td class="border-0 py-2 px-0 text-muted">{{orden.billete_pago}}</td>
+                    </tr>
+                </ng-container>
+                
+               
+              </tbody>
+            </table>
+          </div>
+          <div class="col-lg-6">
+            <table class="table mb-0">
+              <tbody>
+                <tr>
+                  <th class="border-0 py-2 pl-0">Tiempo estimado de entrega:</th>
+                  <td class="border-0 py-2 px-0 text-muted">{{orden.tiempo_entrega == null ? '-' : orden.tiempo_entrega}}</td>
+                </tr>
+                <tr>
+                  <th class="border-0 py-2 pl-0">Estado:</th>
+                  <td class="align-middle border-0">
+                    <div [ngSwitch]="orden.estado">
+                        <div *ngSwitchCase="1">
+                            <span class="badge badge-warning">Pendiente</span>
+                        </div>
+                        <div *ngSwitchCase="2">
+                            <span class="badge badge-info">En proceso</span>
+                        </div>
+                        <div *ngSwitchCase="3">
+                            <span class="badge badge-secondary">Preparado</span>
+                        </div>
+                        <div *ngSwitchCase="4">
+                            <span class="badge badge-info">En camino</span>
+                        </div>
+                        <div *ngSwitchCase="5">
+                          <span class="badge badge-success">Completado</span>
+                        </div>
+                        <div *ngSwitchDefault>
+                            <span class="badge badge-danger">Error</span>
+                        </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                    <th class="border-0 py-2 pl-0">Subtotal:</th>
+                    <td class="border-0 py-2 px-0 text-muted">S/ {{orden.subtotal | number:'1.2-2'}}</td>
+                </tr>
+                <tr>
+                    <th class="border-0 py-2 pl-0">Delivery:</th>
+                    <td class="border-0 py-2 px-0 text-muted">S/ {{(orden.direccion == null ? 0 : orden.direccion.comision) | number:'1.2-2'}}</td>
+                </tr>
+                <tr>
+                    <th class="border-0 py-2 pl-0">Descuento por puntos:</th>
+                    <td class="border-0 py-2 px-0 text-muted">-</td>
+                </tr>
+                <tr>
+                    <th class="border-0 py-2 pl-0">TOTAL:</th>
+                    <td style="color: black; font-weight: 700;" class="border-0 py-2 px-0">S/ {{orden.total | number:'1.2-2'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="col-12">
+      
+    </div>
+</div>
+
+
+  <table class="table" style="color: black;" *ngIf="productos.length > 0">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of productos; let i = index">
+        <td>
+          <a style="min-width: 80px;">
+            <img [src]="p?.imagen ? p.imagen : 'assets/img/no-image.png'" width="80" alt="Product thumb">
+          </a>
+        </td>
+        <td>
+          <h3 class="font-registro mb-3">
+            <a class="nav-link font-weight-bold">{{p.nombre}}</a>
+          </h3>
+          <ng-container *ngIf="p.acompanamientos != null">
+            <ul class="list-unstyled font-size-sm mt-n2 mb-2">
+              <li class="mb-0" *ngFor="let ma of categorizarPorTipoAcomps(p.acompanamientos);">
+                <span class="text-muted">{{ma.tipo}}:</span>
+                <ul>
+                  <li *ngFor="let acomp of ma.acompanamientos">
+                    {{acomp.acompanamiento}}<span style="font-weight: bold;">{{acomp.precio > 0 ? ": S/ " + (acomp.precio | number:'1.2-2') : ''}}</span>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </ng-container>
+          <ng-container *ngIf="p.combos != null">
+            <ul class="list-unstyled font-size-sm mt-n2 mb-2">
+              <span class="text-muted">Combos:</span>
+              <li class="mb-0" *ngFor="let c of p.combos">
+                <ul>
+                  <li>{{c.descripcion}}: <span style="font-weight: bold;">S/ {{c.precio | number:'1.2-2'}}</span></li>
+                </ul>
+              </li>
+            </ul>
+          </ng-container>
+          
+        </td>
+        <td>
+            <h3 class="font-registro mb-3">
+              <a class="nav-link font-weight-bold">S/ {{p.precio | number:'1.2-2'}}</a>
+            </h3>
+          </td>
+        <td>
+          <span class="font-registro quantity">{{p.cantidad}}</span>
+        </td>
+        <td>
+          <div class="font-registro text-nowrap"><strong>S/ {{(p.precio * p.cantidad) | number:'1.2-2'}}</strong></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>

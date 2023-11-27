@@ -1,0 +1,52 @@
+<!-- Content -->
+<div class="d-flex align-items-center justify-content-between mb-4 pb-1 pb-sm-3">
+    <h1 class="h2 mb-0">Direcciones</h1>
+</div>
+<form #registerDirForm="ngForm" (ngSubmit)="registrarDireccion(registerDirForm)">
+    <div class="row pb-3">
+        <div class="col-sm-6 form-group">
+            <label for="ac-fn">Dirección:</label>
+            <input type="text" class="form-control form-control-lg" name="direccion" [(ngModel)]="direccion.direccion" placeholder="Ingresa tu dirección">
+        </div>
+        <div class="col-sm-6 form-group">
+            <label for="ac-ln">Referencia:</label>
+            <select id="ch-referencia" class="custom-select custom-select-lg" name="id_lugar" [(ngModel)]="direccion.id_lugar" (change)="onLocalidadSeleccionada()">
+                <option value="" disabled selected>Escoge tu localidad</option>
+                <option value="{{l.id_lugar}}" *ngFor="let l of lugares">{{l.lugar}}</option>
+            </select>
+        </div>
+        
+    </div>
+    <button type="submit" class="btn btn-process btn-lg">&nbsp;Registrar direccion&nbsp;</button>
+</form>
+
+<table class="table mt-5" style="color: black;">
+    <thead>
+      <tr>
+        <th scope="col">Nro</th>
+        <th scope="col">Direccion</th>
+        <th scope="col">Referencia</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of direcciones; let i = index">
+        <td class="align-middle">
+            {{i+1}}
+        </td>
+        <td class="align-middle">
+          <span class="font-size-md mb-3" style="font-weight: normal;">{{d.direccion}}</span>
+        </td>
+        <td class="align-middle">
+          <span class="font-size-md mb-3" style="font-weight: normal;">{{d.lugar}}</span>
+        </td>
+        <td class="align-middle">
+          <button class="btn btn-outline-primary mr-0 mr-sm-0 p-2"><span class="font-size-md">Editar</span></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="message-vacio" *ngIf="direcciones.length == 0">
+    <span style="color: red;">No tienes direcciones registradas</span>
+  </div>

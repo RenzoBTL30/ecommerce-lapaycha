@@ -1,23 +1,24 @@
+<app-navbar></app-navbar>
+
 <main  class="cs-page-wrapper">
     <section class="container pt-3 pt-md-4 pb-3 pb-sm-4 pb-lg-5 mb-4">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6 mx-auto">
                 <div class="px-md-5">
-                    <h3 class="modal-title mt-4 mb-0 text-center">Iniciar Sesión</h3>
-                    <form>
+                    <h3 class="modal-title mt-4 mb-4 text-center">Iniciar Sesión</h3>
+                    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" >
                       <div class="form-group">
                         <label for="signin-email">Correo electrónico</label>
-                        <input type="email" class="form-control" placeholder="Your email address" required="">
+                        <input type="email" class="form-control" placeholder="Ingresa tu correo electrónico" required="" name="email" [(ngModel)]="credentials.email">
                       </div>
                       <div class="form-group">
                         <label for="signin-password" class="form-label">Contraseña</label>
                         <div class="cs-password-toggle input-group-overlay">
-                          <input type="password" class="form-control appended-form-control" id="signin-password" placeholder="Your password" required="">
+                          <input [type]="changetype?'password':'text'" class="form-control appended-form-control" id="signin-password" placeholder="Ingresa tu contraseña" required="" name="contrasenia" [(ngModel)]="credentials.contrasenia">
                           <div class="input-group-append-overlay">
-                            <label class="btn cs-password-toggle-btn input-group-text">
-                              <input type="checkbox" class="custom-control-input">
-                              <i class="cxi-eye cs-password-toggle-indicator"></i>
-                              <span class="sr-only">Show password</span>
+                            <label class="btn cs-password-toggle-btn input-group-text" (click)="viewpass()">
+                              <span><i [ngClass]="visible?'cxi-eye':'cxi-eye-closed'"></i>
+                              </span>
                             </label>
                           </div>
                         </div>
@@ -28,7 +29,7 @@
                       <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
                       <p class="font-size-sm pt-4 mb-0">
                         No tienes una cuenta?
-                        <a href="#" class="font-weight-bold text-decoration-none">Registrate</a>
+                        <a [routerLink]="['/register']" class="font-weight-bold text-decoration-none">Registrate</a>
                       </p>
                     </form>
                   </div>

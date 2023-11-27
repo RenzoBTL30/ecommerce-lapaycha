@@ -11,8 +11,16 @@
     </div>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         <ul class="navbar-nav container__categoria-lista" style="--bs-scroll-height: 400px;">
+            <!---- Forma anterior de seleccionar categoria (era solo usando Outputs)
             <li class="container__categoria-item" *ngFor="let c of categorias" (click)="seleccionarCategoria(c.id_categoria)">
                 <span [ngClass]="{'categoria-seleccionada': c.id_categoria === categoriaSeleccionadaId}">{{c.nombre}}</span>
+            </li> 
+            ----->
+            
+            <li class="container__categoria-item" *ngFor="let c of categorias">
+                <a [routerLink]="['/carta', c.id_categoria]" >
+                    <span routerLinkActive="categoria-seleccionada">{{c.nombre}}</span>
+                </a>
             </li>
         </ul>
     </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProductoService } from 'src/app/services/producto.service';
 declare var tns:any;
 
 @Component({
@@ -7,6 +8,12 @@ declare var tns:any;
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent {
+
+  productos:any[]=[]
+
+  constructor (private prodService: ProductoService) {
+
+  }
 
   ngOnInit(): void {
 
@@ -24,6 +31,18 @@ export class InicioComponent {
   
     },500);
 
+    this.getPromociones();
+
   }
+
+  getPromociones() {
+    this.prodService.getProductosByCategoria(20).subscribe(
+      data=>{
+        this.productos=data;
+      }
+    );
+  }
+
+
   
 }

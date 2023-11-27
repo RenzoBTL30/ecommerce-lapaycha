@@ -8,19 +8,17 @@ import { apiURL } from './global';
 })
 export class ProductoService {
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  };
+  private httpHeaders = new HttpHeaders(
+    {'Content-Type': 'application/json'}
+  );
 
   constructor(private http: HttpClient) {}
 
   getProductosByCategoria(id: number): Observable<any> {
-    return this.http.get<any>(`${apiURL}/producto/buscar/productos/${id}`);
+    return this.http.get<any>(`${apiURL}/producto/buscar/productos/${id}`, {headers: this.httpHeaders});
   }
 
   getProductosById(id: number): Observable<any> {
-    return this.http.get<any>(`${apiURL}/producto/buscar/producto/${id}`);
+    return this.http.get<any>(`${apiURL}/producto/buscar/producto/${id}`, {headers: this.httpHeaders});
   }
 }

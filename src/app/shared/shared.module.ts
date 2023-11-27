@@ -7,27 +7,29 @@ import { NavbarCartaComponent } from './navbar-carta/navbar-carta.component';
 import { SidebarUsuarioComponent } from './sidebar-usuario/sidebar-usuario.component';
 import { FormsModule } from '@angular/forms';
 import { CarritoModalComponent } from './modals/carrito-modal/carrito-modal.component';
+import { RedondeoPipe } from '../pipes/redondeo.pipe';
 
 
 @NgModule({
-  declarations: [
-    NavbarComponent,
-    FooterComponent,
-    NavbarCartaComponent,
-    SidebarUsuarioComponent,
-    CarritoModalComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule
-  ],
-  exports: [
-    NavbarComponent,
-    FooterComponent,
-    NavbarCartaComponent,
-    SidebarUsuarioComponent,
-    CarritoModalComponent
-  ]
+    declarations: [
+        RedondeoPipe,
+        NavbarComponent,
+        FooterComponent,
+        NavbarCartaComponent,
+        SidebarUsuarioComponent,
+        CarritoModalComponent,
+    ],
+    exports: [
+        NavbarComponent,
+        FooterComponent,
+        NavbarCartaComponent,
+        SidebarUsuarioComponent,
+        CarritoModalComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule
+    ]
 })
 export class SharedModule { }

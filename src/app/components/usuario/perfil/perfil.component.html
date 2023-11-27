@@ -1,0 +1,33 @@
+<!-- Content -->
+    <div class="d-flex align-items-center justify-content-between mb-4 pb-1 pb-sm-3">
+        <h1 class="h2 mb-0">Mi Perfil</h1>
+        <!---
+        <a href="#" class="btn text-danger btn-link font-size-base text-decoration-none pr-0">
+            <i class="cxi-delete font-size-lg mt-n1 mr-2"></i>
+            Eliminar cuenta
+        </a>
+        --->
+    </div>
+    <form #updateDataForm="ngForm" (ngSubmit)="actualizarDatosCliente(updateDataForm)">
+        <div class="row pb-3">
+            <div class="col-sm-6 form-group">
+                <label for="ac-fn">Nombre:</label>
+                <input type="text" class="form-control form-control-lg" name="nombre" [(ngModel)]="usuario.nombre">
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="ac-ln">Apellidos:</label>
+                <input type="text" id="ac-ln" class="form-control form-control-lg" name="apellidos" [(ngModel)]="usuario.apellidos">
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="ac-email">Correo electrónico:</label>
+                <input type="email" id="ac-email" class="form-control form-control-lg" name="email" [(ngModel)]="usuario.email">
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="ac-phone">Celular:</label>
+                <input type="text" id="ac-phone" class="form-control form-control-lg" name="celular" [(ngModel)]="usuario.celular">
+            </div>
+            
+        </div>
+        <button type="submit" class="btn btn-process btn-lg">&nbsp;Actualizar datos&nbsp;</button>
+        <a [routerLink]="['/cuenta/cambiar-password']" class="btn btn-process btn-lg ml-4">&nbsp;Cambiar contraseña&nbsp;</a>
+    </form>

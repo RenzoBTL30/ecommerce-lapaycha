@@ -1,0 +1,26 @@
+.puntos-descuento__container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    background-color: white;
+    box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.08);
+}
+
+.puntos-descuento__icon {
+    text-align: center;
+}
+
+.puntos-descuento__title {
+    text-align: center;
+    font-size: 1.3rem;
+    color: black;
+}
+
+.puntos-descuento__puntos {
+    text-align: center;
+    color: #BE0202;
+    font-size: 1.8rem;
+}

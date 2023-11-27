@@ -1,3 +1,73 @@
+b {
+    color: red;
+}
+
 .product__price span {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.product__description {
+    color: black;
+    margin-bottom: 40px;
+}
+
+.form__tipo-acomp-title, .form__nota-adicional {
+    color: black;
+    font-weight: 700;
+}
+
+.form__tipo-acomp-elements {
+    gap: 20px;
+}
+
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+  }
+  
+  .control-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .control-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .quantity {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    font-size: 16px;
+    min-width: 30px;
+    text-align: center;
+  }
+  
+  /* Alinear verticalmente los botones con la cantidad */
+  .control-button.increment {
+    margin-right: 0;
+  }
+  
+  .control-button.decrement {
+    margin-left: 0;
+  }
+
+.form__subtotal {
+    display: flex;
+    justify-content: space-between;
+    background-color: #efefef;
+    border-radius: 25px;
+    color: black;
+    padding: 10px;
+}
+
+.form__subtotal-subtotal {
+    font-weight: 700;
 }

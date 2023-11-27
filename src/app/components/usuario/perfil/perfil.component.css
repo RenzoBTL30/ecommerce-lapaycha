@@ -1,0 +1,10 @@
+.btn-process{
+    background-color: #fa393f;
+    border-color: #fa393f;
+    color: white;
+}
+
+.btn-process:hover{
+    background-color: #C42227;
+    border-color: #C42227;
+}

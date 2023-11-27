@@ -53,3 +53,142 @@ a:hover {
     font-weight: bold;
     overflow: hidden; /* Recorta el contenido si es necesario */
 }
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+  }
+  
+  .control-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .control-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .quantity {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    font-size: 16px;
+    min-width: 30px;
+    text-align: center;
+  }
+  
+  /* Alinear verticalmente los botones con la cantidad */
+  .control-button.increment {
+    margin-right: 0;
+  }
+  
+  .control-button.decrement {
+    margin-left: 0;
+  }
+
+.no-products__container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-products {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.3;
+}
+
+.no-products__title {
+  color: black;
+  font-weight: bold;
+}
+
+.boton-flotante-usuario{
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 999;
+}
+
+.btn-finalizar{
+  background-color: #F2C447;
+  border-color: #F2C447;
+  color: black;
+}
+
+.btn-finalizar:hover{
+  background-color: #f5c02d;
+  border-color: #f5c02d;
+  color: black;
+}
+
+.navbar-toggler-icon, .navbar-toggler-icon::before, .navbar-toggler-icon::after {
+  background-color: white;
+}
+
+@media screen and (max-width: 993px) { /* 0 - 875px */
+  .navbar-nav {
+      background-color: black;
+  }
+
+  #btn-mas{
+    display: none;
+  }
+
+  .boton-flotante-usuario{
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+  }
+  
+  .redes a, .btn-mas label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background: #cc2b2b;
+    color: #fff;
+    width: 145px;
+    height: 45px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0px 1px 10px rgba(0,0,0,0.4);
+    transition: all 500ms ease;
+  }
+  
+  .redes a:hover{
+    background: #fff;
+    color: #cc2b2b;
+  }
+  
+  .redes a{
+    margin-bottom: -15px;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  #btn-mas:checked~ .redes a{
+    margin-bottom: 10px;
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .btn-mas label{
+    cursor: pointer;
+    background: #f44141;
+    font-size: 23px;
+  }
+}

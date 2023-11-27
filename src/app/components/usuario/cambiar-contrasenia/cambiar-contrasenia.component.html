@@ -1,0 +1,36 @@
+<!-- Content -->
+<div class="d-flex align-items-center justify-content-between mb-4 pb-1 pb-sm-3">
+    <h1 class="h2 mb-0">Mi Perfil</h1>
+</div>
+<form #updateDataContraseniaForm="ngForm" (ngSubmit)="actualizarContraseniaCliente(updateDataContraseniaForm)">
+    <div class="row pb-3">
+        <div class="col-sm-6 form-group">
+            <label for="ac-password">Nueva Contraseña:</label>
+            <div class="cs-password-toggle input-group-overlay">
+                <input [type]="changetype?'password':'text'" class="form-control appended-form-control" id="signin-password" placeholder="Ingresa tu contraseña" required name="contrasenia" [(ngModel)]="usuario.contrasenia">
+                <div class="input-group-append-overlay">
+                  <label class="btn cs-password-toggle-btn input-group-text" (click)="viewpass()">
+                    <span><i [ngClass]="visible?'cxi-eye':'cxi-eye-closed'"></i>
+                    </span>
+                  </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 form-group">
+            <label for="ac-password-confirm">Confirmar Contraseña:</label>
+            <div class="cs-password-toggle input-group-overlay">
+                <input [type]="changetypeconfirm?'password':'text'" class="form-control appended-form-control" id="signin-confirm-password" placeholder="Ingresa nuevamente tu contraseña" required name="confirmcontrasenia" #confirmcontrasenia>
+                <div class="input-group-append-overlay">
+                  <label class="btn cs-password-toggle-btn input-group-text" (click)="viewconfirmpass()">
+                    <span><i [ngClass]="visible2?'cxi-eye':'cxi-eye-closed'"></i>
+                    </span>
+                  </label>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <button type="submit" class="btn btn-process btn-lg">&nbsp;Actualizar contraseña&nbsp;</button>
+</form>
+
+<button style="margin-top: 15px;" [routerLink]="['/cuenta/perfil']" class="btn btn-process btn-lg">&nbsp;Regresar&nbsp;</button>

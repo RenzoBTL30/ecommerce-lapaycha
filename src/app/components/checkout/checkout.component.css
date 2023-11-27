@@ -1,0 +1,20 @@
+.label-entrega, .text-puntos {
+    font-size: 0.9rem;
+}
+
+.subtotal__title, .subtotal__price, .forma-entrega__title, .puntos-descuento__title, .metodo-pago__title {
+    color: black;
+    font-weight: bold;
+}
+
+.btn-finalizar{
+    background-color: #F2C447;
+    border-color: #F2C447;
+    color: black;
+}
+
+.btn-finalizar:hover{
+    background-color: #f5c02d;
+    border-color: #f5c02d;
+    color: black;
+}

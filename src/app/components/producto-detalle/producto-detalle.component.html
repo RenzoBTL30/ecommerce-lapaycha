@@ -1,3 +1,5 @@
+<app-navbar></app-navbar>
+
 <!-- Page wrapper for sticky footer -->
     <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
     <main class="cs-page-wrapper">
@@ -7,15 +9,12 @@
           <div class="container">
             <ol class="breadcrumb breadcrumb-alt mb-0">
               <li class="breadcrumb-item">
-                <a href="index.html"><i class="cxi-home"></i></a>
+                <a [routerLink]="['/']"><i class="cxi-home"></i></a>
               </li>
               <li class="breadcrumb-item">
-                <a href="shop-catalog.html">Women</a>
+                <a [routerLink]="['/carta',producto?.id_categoria]" >{{producto?.categoria}}</a>
               </li>
-              <li class="breadcrumb-item">
-                <a href="shop-catalog.html">Clothes</a>
-              </li>
-              <li class="breadcrumb-item active" aria-current="page">Basic hooded sweatshirt in pink</li>
+              <li class="breadcrumb-item active" aria-current="page">{{producto?.nombre}}</li>
             </ol>
           </div>
         </nav>
@@ -26,65 +25,140 @@
             <div class="col-md-6 mb-md-0 mb-4">
               <!-- Product gallery -->
               <div class="product__image mx-auto" style="max-width: 570px;">
-                  <img [src]="producto.imagen ? producto.imagen : 'assets/img/no-image.png'" alt="Product image">
+                  <img [src]="producto?.imagen ? producto.imagen : 'assets/img/no-image.png'" alt="Product image">
               </div>
             </div>
             <div class="col-md-6 pl-xl-5">
               <h3 class="mb-2 mb-md-0">{{producto?.nombre}}</h3>
               <div class="d-sm-flex align-items-center justify-content-between mb-4">
-  
                 <!-- Price -->
                 <div class="product__price d-flex align-items-center mb-sm-0 mb-4 mt-3">
-                  <span class="h3 d-inline-block mb-0 text-danger">S/ {{producto?.precio}}</span>
+                  <span class="h3 d-inline-block mb-0 text-danger">S/&nbsp;</span>
+                  <span class="h3 d-inline-block mb-0 text-danger">{{producto?.precio}}</span>
                 </div>
+              </div>
+
+              <div class="product__description">
+                <span>{{producto?.descripcion}}</span>
               </div>
   
               <!-- Ordering form -->
-              <form class="row">
-                <div class="col-12">
+              <form #miFormulario="ngForm" class="row">
+                <div *ngIf="acomps.length > 0" class="col-12 mb-3">
+                  <div class="form-group" *ngFor="let ma of mappedAcomps">
+                    <ng-container *ngIf="ma.tipo == 'Salsas'">
+                      <label class="form__tipo-acomp-title">Elige {{ma.tipo}} (Máximo 4):</label>
+                      <div class="form__tipo-acomp-elements d-flex align-items-middle">
+                        <div class="form-check form-check-inline" *ngFor="let acomp of ma.acompanamientos">
+                            <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            id="{{acomp.id_acompanamiento}}"
+                            [checked]="selectedAcompanamientos.includes(acomp)"
+                            (change)="toggleAcompanamientoMultiple(acomp)"
+                          >
+                          <label class="form-check-label" for="{{acomp.id_acompanamiento}}">{{acomp.acompanamiento}}</label>                        
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="ma.tipo != 'Salsas'">
+                      <label class="form__tipo-acomp-title">Elige {{ma.tipo}}:</label>
+                      <div class="form__tipo-acomp-elements d-flex align-items-middle">
+                        <div class="form-check form-check-inline" *ngFor="let acomp of ma.acompanamientos">
+                            <input 
+                            class="form-check-input" 
+                            [type]="ma.tipo_seleccion == 'Multiple' ? 'checkbox' :
+                                    ma.tipo_seleccion == 'Unica' ? 'radio' : ''"
+                            id="{{acomp.id_acompanamiento}}"
+                            [checked]="ma.tipo_seleccion == 'Multiple' ? selectedAcompanamientos.includes(acomp) :
+                            ma.tipo_seleccion == 'Unica' ? '' : ''"
+                            (change)="ma.tipo_seleccion == 'Multiple' ? toggleAcompanamientoMultiple(acomp) :
+                                      ma.tipo_seleccion == 'Unica' ? toggleAcompanamientoUnico(acomp) : ''"
+                            [name]="ma.tipo_seleccion == 'Multiple' ? 'opcion-' + acomp.acompanamiento :
+                                    ma.tipo_seleccion == 'Unica' ? 'grupo-' + ma.tipo : ''"
+                            >
+                          <ng-container *ngIf="acomp.precio == 0">
+                            <label class="form-check-label" for="{{acomp.id_acompanamiento}}">{{acomp.acompanamiento}}</label>                        
+                          </ng-container>
+                          <ng-container *ngIf="acomp.precio > 0">
+                            <label class="form-check-label" for="{{acomp.id_acompanamiento}}">{{acomp.acompanamiento}} <strong style="color: red;">+ S/ {{acomp.precio | number:'1.2-2'}}</strong></label>                        
+                          </ng-container>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="combos.length > 0" class="col-12 mb-4">
+                    <label class="form__tipo-acomp-title">Elige tus Combos:</label>
+                      <div class="form__tipo-acomp-elements d-flex align-items-middle">
+                        <div class="form-check form-check-inline" *ngFor="let c of combos">
+                            <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            id="{{c.combo}}"
+                            [checked]="selectedCombos.includes(c)"
+                            (change)="toggleComboMultiple(c)"
+                          >
+                          <label class="form-check-label" for="{{c.combo}}">{{c.combo}} <strong style="color: red;">+ S/ {{c.precio | number:'1.2-2'}}</strong></label>                        
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 mb-3">
                   <div class="form-group">
-                    <label for="pink">Color</label>
-                    <div class="d-flex align-items-middle">
-                      <div class="custom-control cs-custom-color-option cs-custom-color-option-sm custom-control-inline mr-2 mb-2">
-                        <input class="custom-control-input" type="radio" name="color" id="pink" value="Pink" data-label="colorOptionText" checked>
-                        <label class="cs-custom-option-label" for="pink">
-                          <span class="cs-color-swatch" style="background-color: #e0aea2;"></span>
-                        </label>
+                    <label class="form__nota-adicional">Nota adicional:</label>
+                    <textarea id="ch-notes" class="form-control form-control-lg" rows="3" placeholder="Notas que deseas que consideremos" name="nota_adicional" [(ngModel)]="nota_adicional"></textarea>
+                  </div>
+                </div>
+                <!---
+                  <div class="col-sm-8 mb-3" *ngIf="tamanios.length > 0">
+                    <div class="form-group">
+                      <label class="form__tipo-acomp-title">Elige el tamaño:</label>
+                      <div class="form__tipo-acomp-elements d-flex align-items-middle">
+                        <div class="form-check form-check-inline" *ngFor="let t of tamanios">
+                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                          <label class="form-check-label" for="inlineRadio1">{{t.acompanamiento}} <b>{{t.precio == 0 ? '' : '+ S/ '+ (t.precio | number:'1.2-2') }}</b></label>
+                        </div>
                       </div>
-                      <div class="custom-control cs-custom-color-option cs-custom-color-option-sm custom-control-inline mr-2 mb-2">
-                        <input class="custom-control-input" type="radio" name="color" id="blue" value="Blue" data-label="colorOptionText">
-                        <label class="cs-custom-option-label" for="blue">
-                          <span class="cs-color-swatch" style="background-color: #c0dded;"></span>
-                        </label>
-                      </div>
-                      <div class="custom-control cs-custom-color-option cs-custom-color-option-sm custom-control-inline mr-2 mb-2">
-                        <input class="custom-control-input" type="radio" name="color" id="yellow" value="Yellow" data-label="colorOptionText">
-                        <label class="cs-custom-option-label" for="yellow">
-                          <span class="cs-color-swatch" style="background-color: #fede41;"></span>
-                        </label>
-                      </div>
-                      <span class="d-inline-block pl-2 text-muted" id="colorOptionText">Pink</span>
+                    </div>
+                  </div>
+                ---->
+                
+
+                <div class="col-lg-5 align-self-end mb-4">
+                  <div class="quantity-control">
+                    <button class="control-button increment" (click)="incrementar()">+</button>
+                    <span class="quantity">{{cantidad}}</span>
+                    <button class="control-button decrement" (click)="disminuir()">-</button>
+                  </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                  <div class="form__subtotal">
+                    <div class="form__subtotal-title">
+                      <span>Subtotal:</span>
+                    </div>
+                    <div class="form__subtotal-subtotal">
+                      <span>S/&nbsp;</span>
+                      <!---<span #subtotal_producto>{{(producto?.precio * cantidad) | number:'1.2-2'}}</span>--->
+                      <span>{{subtotal_producto | number:'1.2-2'}}</span>
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-8 order-sm-1 order-2">
-                  <div class="form-group">
-                    <label for="size">Size</label>
-                    <select class="form-control custom-select" id="size">
-                      <option>Please select</option>
-                      <option>Option item 1</option>
-                      <option>Option item 2</option>
-                      <option>Option item 3</option>
-                    </select>
-                  </div>
-                </div>
                 
-                <div class="col-lg-6 order-lg-4 order-4">
-                  <button class="btn btn-block btn-primary">
-                    <i class="cxi-cart mr-2"></i>
-                    Agregar al carrito
-                  </button>
-                </div>
+                <ng-container *ngIf="token">
+                  <div class="col-lg-6">
+                    <button (click)="agregarProductoAlCarrito();" class="btn btn-block btn-primary">
+                      <i class="cxi-cart mr-2"></i>
+                      Agregar al carrito
+                    </button>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="token == ''">
+                  <div class="col-lg-12">
+                    <span style="color: red;">Debes iniciar sesión para empezar a comprar. Haz clic <strong> <a style="color: red;" [routerLink]="['/login']">aquí</a> </strong></span>
+                  </div>
+                </ng-container>
+                
                
               </form>
 

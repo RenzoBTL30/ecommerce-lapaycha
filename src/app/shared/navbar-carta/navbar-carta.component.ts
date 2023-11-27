@@ -11,9 +11,9 @@ export class NavbarCartaComponent {
 
   categorias: any[] = [];
   isLoading?: boolean;
-  categoriaSeleccionadaId: number | null = null;
-
-  @Output() categoriaSeleccionada = new EventEmitter<number>();
+  
+  //categoriaSeleccionadaId: number | null = null;
+  //@Output() categoriaSeleccionada = new EventEmitter<number>();
   
   constructor(private catService: CategoriaService) { }
 
@@ -34,8 +34,11 @@ export class NavbarCartaComponent {
   }
 
   // Método para manejar la selección de la categoría y emitir el ID
+  /* Forma anterior para seleccionar una categoria (era enviando el idCategoria al padre: carta.component)
+
   seleccionarCategoria(idCategoria: number) {
     this.categoriaSeleccionadaId = idCategoria;
     this.categoriaSeleccionada.emit(idCategoria);
   }
+  */
 }

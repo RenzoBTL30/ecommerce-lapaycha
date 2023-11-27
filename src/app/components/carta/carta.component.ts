@@ -12,19 +12,30 @@ export class CartaComponent {
   productos: any[] = [];
   isLoading?: boolean;
 
-  constructor(private route: ActivatedRoute, private prodService: ProductoService) { 
-    /*
-    this.route.params.subscribe(params => {
-      const idCategoria = +params['id'];
-      this.getProductosByCategoria(idCategoria);
-    });
-    */
+  constructor(private route: ActivatedRoute, private prodService: ProductoService) {
+
   }
 
   ngOnInit(): void {
-    this.getProductosByCategoria(1);
+    //this.getProductosByCategoria(1);
+    
+    this.route.params.subscribe(
+      e=>{
+        let id=e['id'];
+        if (id) {
+          this.isLoading = true;
+          this.prodService.getProductosByCategoria(id).subscribe(
+            es=>{
+              this.productos=es;
+              this.isLoading = false;
+            }
+          );
+        }
+      }
+    )
   }
 
+  /*
   getProductosByCategoria(idCategoria: number) {
     this.isLoading = true;
     this.prodService.getProductosByCategoria(idCategoria).subscribe((data) => {
@@ -36,4 +47,5 @@ export class CartaComponent {
       this.isLoading = false;
     });
   }
+  */
 }

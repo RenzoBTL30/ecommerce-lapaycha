@@ -1,1 +1,1 @@
-export const apiURL: string = 'http://85.239.232.143/api';
+export const apiURL: string = 'https://back.lapaycha.com/api';

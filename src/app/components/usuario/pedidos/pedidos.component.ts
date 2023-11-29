@@ -3,6 +3,7 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { OrdenService } from 'src/app/services/orden.service';
 import { Subject, interval, takeUntil } from 'rxjs';
+import * as moment from 'moment-timezone';
 
 declare let alertify:any;
 
@@ -64,8 +65,20 @@ export class PedidosComponent implements OnInit {
     
   }
 
+  /*
   formatearFecha(fecha: string) {
-    return this.datePipe.transform(fecha, 'dd-MM-yyyy HH:mm:ss');
+    // Crear un objeto moment con la fecha proporcionada en formato UTC
+    const momentFecha = moment.utc(fecha);
+
+    // Formatear la fecha local sin cambiar la zona horaria
+    const fechaFormateada = momentFecha.tz('America/Lima').format('YYYY-MM-DD HH:mm:ss');
+
+    return fechaFormateada;
+  }
+  */
+
+  formatearFecha(fecha: string) {
+    return this.datePipe.transform(fecha, 'YYYY-MM-DD HH:mm:ss');
   }
 
   cancelarOrden(id_orden:number) {

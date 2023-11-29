@@ -78,7 +78,7 @@ export class PedidosComponent implements OnInit {
   */
 
   formatearFecha(fecha: string) {
-    return this.datePipe.transform(fecha, 'YYYY-MM-DD HH:mm:ss');
+    return this.datePipe.transform(fecha, 'dd-MM-yyyy HH:mm:ss');
   }
 
   cancelarOrden(id_orden:number) {

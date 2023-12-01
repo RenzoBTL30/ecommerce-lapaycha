@@ -34,7 +34,7 @@ export class OrdenService {
     return this.http.get<any>(`${apiURL}/orden/buscar/porcliente/${id_usuario}`, {headers: this.agregarAuthorizationHeader()});
   }
 
-  getOrdenesByStatus(id_usuario:number, estado:string): Observable<any> {
+  getOrdenesByIdUsuarioAndStatus(id_usuario:number, estado:string): Observable<any> {
     return this.http.get<any>(`${apiURL}/orden/buscar/porclienteestado/${id_usuario}/${estado}`, {headers: this.agregarAuthorizationHeader()});
   }
 

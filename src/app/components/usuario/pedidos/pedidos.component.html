@@ -15,6 +15,7 @@
 <table class="table mt-5" style="color: black;">
     <thead>
       <tr>
+        <th scope="col">Nro</th>
         <th scope="col">Codigo</th>
         <th scope="col">Fecha</th>
         <th scope="col">Tiempo estimado de entrega</th>
@@ -25,15 +26,16 @@
     </thead>
     <tbody>
       <tr *ngFor="let o of ordenes; let i = index">
+        <td>{{i + 1}}</td>
         <td class="align-middle">
           <a [routerLink]="['/cuenta/pedidos', o.id_orden]">
-            <span class="font-size-md mb-3" style="font-weight: normal;">{{o.codigo}}</span>
+            <span class="font-size-md mb-3" style="font-weight: normal;">{{formatearCodigo(o.codigo)}}</span>
           </a>
         </td>
         <td class="align-middle">
-          <span class="font-size-md mb-3" style="font-weight: normal;">{{formatearFecha(o.fecha_orden)}}</span>
+          <span class="font-size-md mb-3" style="font-weight: normal; color: rgb(88, 88, 88);">{{formatearFecha(o.fecha_orden)}}</span>
         </td>
-        <td class="align-middle">
+        <td class="align-middle" style="text-align: center;">
           <span class="font-size-md mb-3" style="font-weight: normal;">{{o.tiempo_entrega == null ? '-' : o.tiempo_entrega}}</span>
         </td>
         <td class="align-middle">
@@ -73,5 +75,5 @@
     </tbody>
   </table>
   <div class="message-vacio" *ngIf="ordenes.length == 0">
-    <span style="color: red;">Todavía no haz hecho ningún pedido. Haz clic <a [routerLink]="['/carta']">aquí</a> para ir a la carta</span>
+    <span style="color: red;">Todavía no haz hecho ningún pedido. Haz clic <a style="color: red; text-decoration: underline;" [routerLink]="['/carta/2']">aquí</a> para ir a la carta</span>
   </div>

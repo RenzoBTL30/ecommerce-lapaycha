@@ -17,6 +17,7 @@ import { PerfilComponent } from './usuario/perfil/perfil.component';
 import { CambiarContraseniaComponent } from './usuario/cambiar-contrasenia/cambiar-contrasenia.component';
 import { PedidoDetalleComponent } from './usuario/pedido-detalle/pedido-detalle.component';
 import { PedidosCompletadosComponent } from './usuario/pedidos-completados/pedidos-completados.component';
+import { ViewPedidoRealizadoComponent } from './view-pedido-realizado/view-pedido-realizado.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { PedidosCompletadosComponent } from './usuario/pedidos-completados/pedid
     CambiarContraseniaComponent,
     PedidoDetalleComponent,
     PedidosCompletadosComponent,
+    ViewPedidoRealizadoComponent,
   ],
   imports: [
     CommonModule,

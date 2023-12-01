@@ -1,4 +1,5 @@
 import { AfterViewChecked, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, interval, map, takeUntil, takeWhile, timer } from 'rxjs';
 import { CarritoService } from 'src/app/services/carrito.service';
@@ -52,6 +53,7 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
     private metodosPagoService: MetodosPagoService,
     private direccionService: DireccionesService,
     private ordenService: OrdenService,
+    private router: Router,
     taperService: TaperService,
     private toastr: ToastrService,
     ) {
@@ -193,12 +195,25 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
       console.log(this.orden);
       
       this.ordenService.registrarOrden(this.orden).subscribe(res => {
-        this.toastr.success('Orden registrada correctamente');
+        this.toastr.success('Pedido registrado correctamente');
+        
+        for (let index = 0; index < this.productos.length; index++) {
+          this.carritoService.eliminarProductoCarrito(index)
+        }
+
+        this.taperService.taper.cantidad_taper = 0;
+        this.taperService.taper.subtotal_taper = 0;
+        
+        this.navigateToPedidoRealizado();
       })
       
     }
     
     
+  }
+
+  navigateToPedidoRealizado() {
+    this.router.navigate(['/pedido-realizado']);
   }
 
   isValidCheckout(): boolean {

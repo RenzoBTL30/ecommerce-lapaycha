@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OrdenService } from 'src/app/services/orden.service';
 import { Subject, interval, takeUntil } from 'rxjs';
 import * as moment from 'moment-timezone';
+import { OrdenesSocketService } from 'src/app/services/ordenes-socket.service';
 
 declare let alertify:any;
 
@@ -18,12 +19,14 @@ export class PedidosComponent implements OnInit {
   ordenes:any[]=[];
   ordenesConTiempo: any[] = [];
   buttonVisibility: { [key: number]: boolean } = {};
+
   private destroy$ = new Subject<void>();
 
   id_usuario:any;
 
   constructor (
     private ordenService: OrdenService,
+    private ordenesSocket: OrdenesSocketService,
     private toastr: ToastrService,
     private datePipe: DatePipe,
     private zone: NgZone
@@ -37,6 +40,11 @@ export class PedidosComponent implements OnInit {
     
     this.getOrdenesAll();
 
+    this.ordenesSocket.recibirNotificacionEstadoOrden().subscribe(response => {
+      //console.log(response);
+      this.getOrdenesAll();
+    });
+
     /*
     this.ordenService.ordenRegistradaSubject.subscribe(response => {
       console.log(response);
@@ -48,7 +56,7 @@ export class PedidosComponent implements OnInit {
   getOrdenesAll() {
     this.ordenService.getOrdenesAll(this.id_usuario).subscribe(data=>{
       this.ordenes = data;
-      console.log(this.ordenes);
+      //console.log(this.ordenes);
       // Inicializa el temporizador para cada orden
       /*
       this.ordenes.forEach((o) => {
@@ -78,7 +86,11 @@ export class PedidosComponent implements OnInit {
   */
 
   formatearFecha(fecha: string) {
-    return this.datePipe.transform(fecha, 'dd-MM-yyyy HH:mm:ss');
+    return this.datePipe.transform(fecha, 'dd MMM - hh:mm:ss aaaa')!.toLowerCase();
+  }
+
+  formatearCodigo(codigo: string) {
+    return codigo.slice(0, 8) + "...";
   }
 
   cancelarOrden(id_orden:number) {

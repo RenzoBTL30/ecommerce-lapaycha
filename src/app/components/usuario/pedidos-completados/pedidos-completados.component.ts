@@ -26,18 +26,22 @@ export class PedidosCompletadosComponent {
   ngOnInit() {
     this.id_usuario = parseInt(sessionStorage.getItem('id_usuario') ?? '');
     
-    this.getOrdenesAll();
+    this.getOrdenesCompletadas();
   }
 
-  getOrdenesAll() {
-    this.ordenService.getOrdenesAll(this.id_usuario).subscribe(data=>{
+  getOrdenesCompletadas() {
+    this.ordenService.getOrdenesByIdUsuarioAndStatus(this.id_usuario, '5').subscribe(data=>{
       this.ordenes = data;
-      console.log(this.ordenes);
+      //console.log(this.ordenes);
     });    
   }
 
   formatearFecha(fecha: string) {
-    return this.datePipe.transform(fecha, 'dd-MM-yyyy HH:mm:ss');
+    return this.datePipe.transform(fecha, 'dd MMM - hh:mm:ss aaaa')!.toLowerCase();
+  }
+
+  formatearCodigo(codigo: string) {
+    return codigo.slice(0, 8) + "...";
   }
 
 }

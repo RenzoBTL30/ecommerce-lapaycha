@@ -15,12 +15,14 @@ import { CambiarContraseniaComponent } from './components/usuario/cambiar-contra
 import { PedidoDetalleComponent } from './components/usuario/pedido-detalle/pedido-detalle.component';
 import { PedidosComponent } from './components/usuario/pedidos/pedidos.component';
 import { PedidosCompletadosComponent } from './components/usuario/pedidos-completados/pedidos-completados.component';
+import { ViewPedidoRealizadoComponent } from './components/view-pedido-realizado/view-pedido-realizado.component';
 
 const routes: Routes = [
   { path: '', component:InicioComponent },
   { path: 'carta/:id', component: CartaComponent },
   { path: 'producto/:id', component:ProductoDetalleComponent },
   { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard] },
+  { path: 'pedido-realizado', component: ViewPedidoRealizadoComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   

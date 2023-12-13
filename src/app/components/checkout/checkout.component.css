@@ -18,3 +18,13 @@
     border-color: #f5c02d;
     color: black;
 }
+
+.puntos-ganados {
+    color: rgb(16, 159, 16);
+    font-weight: bold;
+}
+
+.btn-cancelar-puntos {
+    background-color: rgb(207, 6, 6);
+    color: white;
+}

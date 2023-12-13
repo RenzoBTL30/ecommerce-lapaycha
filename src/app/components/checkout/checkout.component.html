@@ -135,11 +135,14 @@
           }'>
             <div class="sidebar-sticky-inner">
               <div class="form-group">
-                <label for="promo-code">Aplicar puntos de descuento: Tienes 50 puntos</label>
+                <label for="promo-code">Aplicar puntos de descuento: Tienes <strong>{{puntos_usuario}}</strong> puntos</label>
                 <div class="input-group input-group-lg">
-                  <input type="text" id="promo-code" class="form-control" placeholder="Ingresa tus puntos de descuento">
+                  <input type="text" id="promo-code" class="form-control" placeholder="Ingresa tus puntos de descuento" [(ngModel)]="puntos_descuento" name="puntos_descuento">
                   <div class="input-group-append">
-                    <button type="button" class="btn btn-finalizar">&nbsp;&nbsp;Aplicar&nbsp;&nbsp;</button>
+                    <button type="button" class="btn btn-finalizar" (click)="aplicarPuntos()">&nbsp;&nbsp;Aplicar&nbsp;&nbsp;</button>
+                    <button type="button" class="btn btn-cancelar-puntos" (click)="cancelarAplicarPuntos()">
+                      &nbsp;&nbsp;<i class="cxi-cross"></i>&nbsp;&nbsp;
+                    </button>
                   </div>
                 </div>
               </div>
@@ -194,21 +197,21 @@
                     </div>
                     <span>{{'S/ ' + (comision | number:'1.2-2')}}</span>
                   </li>
-                  <!----
+                  
                   <li class="d-flex justify-content-between align-items-center mb-4">
                     <div class="d-flex flex-column">
                       <span class="puntos-descuento__title">Descuento por puntos:</span>
                       <div class="d-flex mt-2 ml-2">
                         <object data="assets/img/subdirectory-arrow-right.svg" type="image/svg+xml" width="18" height="18"></object>
                         <span class="text-puntos ml-1">
-                          Puntos usados: 50
+                          Puntos usados: {{puntos_usados}}
                         </span>
                       </div>
                       
                     </div>
-                    <span>- $10.00</span>
+                    <span>- S/ {{(descuento | number:'1.2-2')}}</span>
                   </li>
-                  ----->
+                  
                   <li class="d-flex flex-column">
                     <div class="d-flex flex-column">
                       <span class="metodo-pago__title mb-3">Método de pago:</span>
@@ -225,6 +228,13 @@
                           </div>
                         </div>
                     </div>
+                  </li>
+
+                  <li class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex flex-column">
+                      <span class="puntos-descuento__title">Puntos que ganarás:</span>                      
+                    </div>
+                    <span class="puntos-ganados">+ {{puntos_ganados}} pts</span>
                   </li>
                 </ul>
                 <div class="d-flex justify-content-between p-4">

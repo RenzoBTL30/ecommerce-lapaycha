@@ -1,23 +1,30 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductoService } from 'src/app/services/producto.service';
+import { ProductosSocketService } from 'src/app/services/productos-socket.service';
 
 @Component({
   selector: 'app-carta',
   templateUrl: './carta.component.html',
   styleUrls: ['./carta.component.css']
 })
-export class CartaComponent {
+export class CartaComponent implements OnInit, OnDestroy{
 
   productos: any[] = [];
+  message: string = '';
   isLoading?: boolean;
 
-  constructor(private route: ActivatedRoute, private prodService: ProductoService) {
-
+  constructor(
+    private route: ActivatedRoute, 
+    private prodService: ProductoService,
+    private productosSocket: ProductosSocketService,
+    private cdr: ChangeDetectorRef
+    ) {
   }
 
   ngOnInit(): void {
     //this.getProductosByCategoria(1);
+    this.productosSocket.conectar();
     
     this.route.params.subscribe(
       e=>{
@@ -33,6 +40,15 @@ export class CartaComponent {
         }
       }
     )
+
+    this.productosSocket.recibirNotificacionDisponibilidad().subscribe(response => {
+      console.log(response);
+      this.cdr.detectChanges();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.productosSocket.desconectar();
   }
 
   /*

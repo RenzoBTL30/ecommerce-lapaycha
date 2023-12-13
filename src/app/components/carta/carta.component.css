@@ -53,3 +53,18 @@
     flex-direction: row;
     justify-content: center;
 }
+
+.marca-agotado {
+    position: absolute;
+    color: #ff252d;
+    font-size: 1.8rem;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(61, 61, 61, 0.8); /* Utiliza rgba en lugar de opacity */
+    z-index: 999;
+}

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, take } from 'rxjs';
+import { Observable, Subject, catchError, take, throwError } from 'rxjs';
 import { apiURL } from './global';
 
 @Injectable({
@@ -43,8 +43,26 @@ export class OrdenService {
   }
 
   //Cancelar pedido u orden
-  updateEstadoDisponible(id_orden:number): Observable<any> {
+  cancelarOrden(id_orden:number): Observable<any> {
     return this.http.put<any>(`${apiURL}/orden/cancelarorden/${id_orden}`,{},{headers: this.agregarAuthorizationHeader()});
+  }
+
+  // ----- Puntos ----- //
+
+  canjearPuntos(id_usuario:number, puntos:number): Observable<any> {
+    return this.http.post<any>(`${apiURL}/puntos/canjear/${id_usuario}`, { puntos:puntos }, {headers: this.agregarAuthorizationHeader()}).pipe(
+      catchError((error: any) => {
+        return throwError(() => error);
+      })
+    );;
+  }
+
+  aplicarPuntos(id_usuario:number, puntos:number, total:any): Observable<any> {
+    return this.http.post<any>(`${apiURL}/puntos/aplicar/${id_usuario}`, { puntos:puntos, total:total }, {headers: this.agregarAuthorizationHeader()}).pipe(
+      catchError((error: any) => {
+        return throwError(() => error);
+      })
+    );;
   }
 
 

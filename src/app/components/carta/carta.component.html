@@ -15,6 +15,7 @@
         </div>
 
         <div class="col-md-9">
+          <!----
           <div class="d-flex align-items-center">
             <div class="form-inline flex-nowrap mr-3 mr-xl-5">
               <div class="input-group-overlay">
@@ -27,11 +28,11 @@
               </div>
             </div>
           </div>
+          ----->
         </div>
       </div>
 
       <app-navbar-carta></app-navbar-carta>
-      <!--<app-navbar-carta (categoriaSeleccionada)="getProductosByCategoria($event)"></app-navbar-carta>-->
 
       <div class="row flex-lg-nowrap">
         <!-- Product grid -->
@@ -43,9 +44,12 @@
           </div>
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4" data-filters-columns>
             <!-- Item -->
-            <div class="col pb-sm-2 mb-grid-gutter" *ngFor="let p of productos">
+            <div class="col pb-sm-2 mb-grid-gutter" style="position: relative;" *ngFor="let p of productos">
               <a [routerLink]="['/producto', p.id_producto]" style="text-decoration: none;">
                 <div class="card mx-auto">
+                  <div *ngIf="p.estado_disponible == 0" class="marca-agotado">
+                    <span>Agotado</span>
+                  </div>
                   <div class="card-product-img card-img-top">
                       <img [src]="p?.imagen ? p.imagen : 'assets/img/no-image.png'" alt="Product image">
                   </div>
@@ -65,39 +69,6 @@
                 </div>
               </a>
             </div>
-          </div>
-
-          <!-- Toolbar + Pagination -->
-          <div class="d-flex align-items-center pt-md-4">
-            <nav class="pt-1 ml-auto" aria-label="Pagination">
-              <ul class="pagination mb-0">
-                <li class="page-item d-sm-none">
-                  <span class="page-link page-link-static">1 / 5</span>
-                </li>
-                <li class="page-item active d-none d-sm-block" aria-current="page">
-                  <span class="page-link">1
-                    <span class="sr-only">(current)</span>
-                  </span>
-                </li>
-                <li class="page-item d-none d-sm-block">
-                  <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item d-none d-sm-block">
-                  <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item d-none d-sm-block">
-                  <a class="page-link" href="#">4</a>
-                </li>
-                <li class="page-item d-none d-sm-block">
-                  <a class="page-link" href="#">5</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
-                    <i class="cxi-arrow-right"></i>
-                  </a>
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
       </div>

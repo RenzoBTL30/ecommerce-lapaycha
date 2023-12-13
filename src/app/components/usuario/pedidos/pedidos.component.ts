@@ -14,11 +14,12 @@ declare let alertify:any;
   templateUrl: './pedidos.component.html',
   styleUrls: ['./pedidos.component.css']
 })
-export class PedidosComponent implements OnInit {
+export class PedidosComponent implements OnInit, OnDestroy {
 
   ordenes:any[]=[];
   ordenesConTiempo: any[] = [];
   buttonVisibility: { [key: number]: boolean } = {};
+  notification: string = '';
 
   private destroy$ = new Subject<void>();
 
@@ -34,14 +35,20 @@ export class PedidosComponent implements OnInit {
 
   }
   
-
   ngOnInit() {
     this.id_usuario = parseInt(sessionStorage.getItem('id_usuario') ?? '');
-    
+
+    this.ordenesSocket.conectar();
     this.getOrdenesAll();
 
+    
     this.ordenesSocket.recibirNotificacionEstadoOrden().subscribe(response => {
       //console.log(response);
+      this.getOrdenesAll();
+    });
+    
+
+    this.ordenesSocket.recibirNotificacionActualizacionTiempoEntrega().subscribe(response => {
       this.getOrdenesAll();
     });
 
@@ -51,6 +58,10 @@ export class PedidosComponent implements OnInit {
       this.buttonVisibility[response.id_orden] = false; // Oculta el botón después de 5 minutos
     });
     */
+  }
+
+  ngOnDestroy() {
+    this.ordenesSocket.desconectar();
   }
 
   getOrdenesAll() {
@@ -66,11 +77,6 @@ export class PedidosComponent implements OnInit {
       */
       
     });
-
-    
-
-    console.log('hola');
-    
   }
 
   /*
@@ -96,9 +102,13 @@ export class PedidosComponent implements OnInit {
   cancelarOrden(id_orden:number) {
 
     alertify.confirm('Confirmación', '¿Estás seguro que quieres cancelar tu pedido?', () => { 
-      this.ordenService.updateEstadoDisponible(id_orden).subscribe(response => {
-        this.getOrdenesAll();
+      this.ordenService.cancelarOrden(id_orden).subscribe(response => {
         this.toastr.success('Tu pedido ha sido cancelado');
+
+        this.notification = 'Un pedido ha sido cancelado';
+        this.ordenesSocket.notificarOrdenCancelada(this.notification);
+
+        this.getOrdenesAll();
       });
     }, () => { 
       
@@ -138,5 +148,6 @@ export class PedidosComponent implements OnInit {
   }
   */
 
+  
   
 }

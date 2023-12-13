@@ -1,15 +1,5 @@
 <div class="d-flex align-items-center justify-content-between mb-4 pb-sm-2">
     <h1 class="h2 mb-0">Mis pedidos</h1>
-    <div class="form-inline">
-      <label for="sort-orders" class="d-none d-sm-block font-weight-bold mr-2 pr-1">Filtrar por</label>
-      <select id="sort-orders" class="custom-select">
-        <option>Todos</option>
-        <option>Pendiente</option>
-        <option>En proceso</option>
-        <option>Preparado</option>
-        <option>En camino</option>
-      </select>
-    </div>
 </div>
 
 <table class="table mt-5" style="color: black;">
@@ -54,6 +44,9 @@
                 </div>
                 <div *ngSwitchCase="5">
                   <span class="badge badge-success">Completado</span>
+                </div>
+                <div *ngSwitchCase="6">
+                  <span class="badge badge-danger">Cancelado</span>
                 </div>
                 <div *ngSwitchDefault>
                     <span class="badge badge-danger">Error</span>

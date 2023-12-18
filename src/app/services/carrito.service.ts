@@ -52,4 +52,9 @@ export class CarritoService {
     this.carritoObs.next(this._carrito);
     
   }
+
+  vaciarCarrito() {
+    this._carrito.length = 0;
+    this.carritoObs.next(this._carrito);
+  }
 }

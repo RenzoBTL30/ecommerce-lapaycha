@@ -5,3 +5,12 @@ tr{
 .font-registro {
     font-size: 1.2rem;
 }
+
+.puntos_ganados {
+    color: rgb(16, 159, 16);
+    font-weight: bold;
+}
+
+.icon-nota {
+    color: blue;
+}

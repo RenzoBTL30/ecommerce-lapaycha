@@ -49,6 +49,14 @@ export class OrdenService {
 
   // ----- Puntos ----- //
 
+  aplicarPuntosParaDescuento(id_usuario:number, puntos:number): Observable<any> {
+    return this.http.post<any>(`${apiURL}/puntos/aplicar/${id_usuario}`, { puntos:puntos }, {headers: this.agregarAuthorizationHeader()}).pipe(
+      catchError((error: any) => {
+        return throwError(() => error);
+      })
+    );;
+  }
+
   canjearPuntos(id_usuario:number, puntos:number): Observable<any> {
     return this.http.post<any>(`${apiURL}/puntos/canjear/${id_usuario}`, { puntos:puntos }, {headers: this.agregarAuthorizationHeader()}).pipe(
       catchError((error: any) => {
@@ -57,8 +65,8 @@ export class OrdenService {
     );;
   }
 
-  aplicarPuntos(id_usuario:number, puntos:number, total:any): Observable<any> {
-    return this.http.post<any>(`${apiURL}/puntos/aplicar/${id_usuario}`, { puntos:puntos, total:total }, {headers: this.agregarAuthorizationHeader()}).pipe(
+  calcularPuntosGanados(total:any): Observable<any> {
+    return this.http.post<any>(`${apiURL}/puntos/calcular`, { total:total }, {headers: this.agregarAuthorizationHeader()}).pipe(
       catchError((error: any) => {
         return throwError(() => error);
       })

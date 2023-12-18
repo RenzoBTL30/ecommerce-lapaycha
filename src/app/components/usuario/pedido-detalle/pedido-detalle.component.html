@@ -47,7 +47,10 @@
                         <td class="border-0 py-2 px-0 text-muted">{{orden.billete_pago}}</td>
                     </tr>
                 </ng-container>
-                
+                <tr>
+                  <th class="border-0 py-2 pl-0">Puntos canjeados:</th>
+                  <td class="border-0 py-2 px-0 text-muted">{{orden.puntos_canjeados == null ? 0 : orden.puntos_canjeados}} pts</td>
+                </tr>
                
               </tbody>
             </table>
@@ -78,6 +81,9 @@
                         <div *ngSwitchCase="5">
                           <span class="badge badge-success">Completado</span>
                         </div>
+                        <div *ngSwitchCase="6">
+                          <span class="badge badge-danger">Cancelado</span>
+                        </div>
                         <div *ngSwitchDefault>
                             <span class="badge badge-danger">Error</span>
                         </div>
@@ -85,17 +91,29 @@
                   </td>
                 </tr>
                 <tr>
+                  <th class="border-0 py-2 pl-0">Puntos ganados:</th>
+                  <td class="border-0 py-2 px-0 puntos_ganados">+ {{orden.puntos_ganados}} pts</td>
+                </tr>
+                <tr>
                     <th class="border-0 py-2 pl-0">Subtotal:</th>
                     <td class="border-0 py-2 px-0 text-muted">S/ {{orden.subtotal | number:'1.2-2'}}</td>
                 </tr>
+                <ng-container *ngIf="orden.total_tapers">
+                  <tr>
+                    <th class="border-0 py-2 pl-0">Total Tapers:</th>
+                    <td class="border-0 py-2 px-0 text-muted">S/ {{orden.total_tapers | number:'1.2-2'}}</td>
+                  </tr>
+                </ng-container>
                 <tr>
                     <th class="border-0 py-2 pl-0">Delivery:</th>
                     <td class="border-0 py-2 px-0 text-muted">S/ {{(orden.direccion == null ? 0 : orden.direccion.comision) | number:'1.2-2'}}</td>
                 </tr>
-                <tr>
+                <ng-container *ngIf="orden.descuento">
+                  <tr>
                     <th class="border-0 py-2 pl-0">Descuento por puntos:</th>
-                    <td class="border-0 py-2 px-0 text-muted">-</td>
-                </tr>
+                    <td class="border-0 py-2 px-0">- S/ {{orden.descuento | number:'1.2-2'}}</td>
+                  </tr>
+                </ng-container>
                 <tr>
                     <th class="border-0 py-2 pl-0">TOTAL:</th>
                     <td style="color: black; font-weight: 700;" class="border-0 py-2 px-0">S/ {{orden.total | number:'1.2-2'}}</td>
@@ -104,6 +122,16 @@
             </table>
           </div>
         </div>
+        <ng-container *ngIf="orden.comprobante_pago">
+          <table class="table mb-0">
+            <tbody>
+              <tr>
+                <th class="border-0 py-2 pl-0">Comprobante de pago:</th>
+                <td class="border-0 py-2 px-0 text-muted">{{orden.comprobante_pago}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
         
       </div>
     </div>
@@ -118,7 +146,8 @@
       <tr>
         <th scope="col"></th>
         <th scope="col">Nombre</th>
-        <th scope="col">Precio</th>
+        <th scope="col">Nota</th>
+        <th scope="col">Costo</th>
         <th scope="col">Cantidad</th>
         <th scope="col">Subtotal</th>
       </tr>
@@ -147,11 +176,11 @@
             </ul>
           </ng-container>
           <ng-container *ngIf="p.combos != null">
-            <ul class="list-unstyled font-size-sm mt-n2 mb-2">
+            <ul class="list-unstyled font-size-sm mt-n2 mb-3">
               <span class="text-muted">Combos:</span>
               <li class="mb-0" *ngFor="let c of p.combos">
                 <ul>
-                  <li>{{c.descripcion}}: <span style="font-weight: bold;">S/ {{c.precio | number:'1.2-2'}}</span></li>
+                  <li>{{c.combo}}: <span style="font-weight: bold;">S/ {{c.precio | number:'1.2-2'}}</span></li>
                 </ul>
               </li>
             </ul>
@@ -159,16 +188,45 @@
           
         </td>
         <td>
+          <ng-container *ngIf="p.nota_adicional">
+            <i style="cursor: pointer;" class="cxi-comment font-size-lg icon-nota" (click)="verNotaAdicional(p.nota_adicional)" data-toggle="modal" data-target="#notaAdicionalModal"></i>
+          </ng-container>
+          <ng-container *ngIf="p.nota_adicional == null">
+            <span>-</span>
+          </ng-container>
+        </td>
+        <td>
             <h3 class="font-registro mb-3">
-              <a class="nav-link font-weight-bold">S/ {{p.precio | number:'1.2-2'}}</a>
+              <a class="nav-link font-weight-bold">S/ {{calcularNuevoPrecioProducto(p.precio, p.acompanamientos, p.combos) | number:'1.2-2'}}</a>
             </h3>
           </td>
         <td>
           <span class="font-registro quantity">{{p.cantidad}}</span>
         </td>
         <td>
-          <div class="font-registro text-nowrap"><strong>S/ {{(p.precio * p.cantidad) | number:'1.2-2'}}</strong></div>
+          <div class="font-registro text-nowrap"><strong>S/ {{(calcularNuevoPrecioProducto(p.precio, p.acompanamientos, p.combos) * p.cantidad) | number:'1.2-2'}}</strong></div>
         </td>
       </tr>
     </tbody>
   </table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="notaAdicionalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nota Adicional</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{nota_adicional}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

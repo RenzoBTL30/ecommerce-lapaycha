@@ -83,11 +83,35 @@
           <!-- Adresses -->
           <ng-container *ngIf="id_forma_entrega == 2">
             <h2 class="h4 mb-4">Direccion de entrega</h2>
-            <div class="row pb-3">
+            <div class="row pb-5">
+              <div class="col-md-12">
+                <label class="subtitle_direccion" for="ch-address">1. Puedes registrar tu dirección de entrega y la referencia aquí:</label>
+              </div>
+              <div class="col-md-12 form-group">
+              </div>
               <div class="col-sm-6 form-group">
-                <label for="ch-address">Dirección de Entrega:</label>
+                <label for="ch-address">Dirección de entrega:</label>
+                <input type="text" class="form-control form-control-lg" name="direccion" [(ngModel)]="direccion.direccion" placeholder="Ingresa tu dirección">
+              </div>
+              <div class="col-sm-6 form-group">
+                <label for="ch-referencia">Referencia:</label>
+                <select id="ch-referencia" class="custom-select custom-select-lg" name="id_lugar" [(ngModel)]="direccion.id_lugar" (change)="onLocalidadSeleccionada()">
+                    <option value="0" disabled>Escoge tu localidad</option>
+                    <option value="{{l.id_lugar}}" *ngFor="let l of lugares">{{l.lugar}}</option>
+                </select>
+              </div>
+              <div class="col-md-12">
+                <button class="btn btn-process btn-lg" (click)="registrarDireccion()" >&nbsp;Registrar dirección&nbsp;</button>
+              </div>
+            </div>
+            <div class="row pb-3">
+              <div class="col-md-12">
+                <label class="subtitle_direccion" for="ch-address">2. O puedes seleccionar una dirección de entrega existente:</label>
+              </div>
+              <div class="col-sm-6 form-group">
+                <label for="ch-address">Dirección de entrega:</label>
                 <select id="ch-referencia" class="custom-select custom-select-lg" [(ngModel)]="id_direccion" (change)="onDireccionSeleccionada()">
-                  <option value="" disabled selected>Escoge tu direccion:</option>
+                  <option value="0" disabled>Escoge tu direccion:</option>
                   <option value="{{d.id_direccion}}" *ngFor="let d of direcciones">{{d.direccion}}</option>
                 </select>
               </div>
@@ -139,11 +163,14 @@
                 <div class="input-group input-group-lg">
                   <input type="text" id="promo-code" class="form-control" placeholder="Ingresa tus puntos de descuento" [(ngModel)]="puntos_descuento" name="puntos_descuento">
                   <div class="input-group-append">
-                    <button type="button" class="btn btn-finalizar" (click)="aplicarPuntos()">&nbsp;&nbsp;Aplicar&nbsp;&nbsp;</button>
+                    <button type="button" class="btn btn-finalizar" (click)="aplicarPuntosParaDescuento()">&nbsp;&nbsp;Aplicar&nbsp;&nbsp;</button>
                     <button type="button" class="btn btn-cancelar-puntos" (click)="cancelarAplicarPuntos()">
                       &nbsp;&nbsp;<i class="cxi-cross"></i>&nbsp;&nbsp;
                     </button>
                   </div>
+                </div>
+                <div class="mt-2">
+                  <span *ngIf="existPoints" class="mensaje-puntos-restantes">Te quedarán <strong>{{puntos_restantes}}</strong> puntos</span>
                 </div>
               </div>
               <div class="bg-secondary rounded mb-4">

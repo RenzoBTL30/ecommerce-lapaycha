@@ -55,6 +55,7 @@ export class DireccionesComponent implements OnInit {
       this.direccionService.registrarDireccion(this.direccion, this.id_usuario).subscribe(response =>{
         this.toastr.success('Dirección registrada correctamente');
         this.getDirecciones();
+        this.limpiar();
       });
     } 
   }
@@ -73,6 +74,10 @@ export class DireccionesComponent implements OnInit {
 
   editarDireccion() {
     
+  }
+
+  limpiar() {
+    this.direccion.direccion = '';
   }
 
 

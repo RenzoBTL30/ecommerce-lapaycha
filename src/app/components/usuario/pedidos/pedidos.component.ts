@@ -92,7 +92,7 @@ export class PedidosComponent implements OnInit, OnDestroy {
   */
 
   formatearFecha(fecha: string) {
-    return this.datePipe.transform(fecha, 'dd MMM - hh:mm:ss aaaa')!.toLowerCase();
+    return this.datePipe.transform(fecha, 'dd MMM - hh:mm:ss aaaa')?.toLowerCase();
   }
 
   formatearCodigo(codigo: string) {

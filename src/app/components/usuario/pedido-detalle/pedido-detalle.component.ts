@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DireccionesService } from 'src/app/services/direcciones.service';
 import { OrdenService } from 'src/app/services/orden.service';
+declare let alertify:any;
 
 @Component({
   selector: 'app-pedido-detalle',
@@ -13,6 +14,7 @@ export class PedidoDetalleComponent {
 
   orden:any = {};
   productos:any[]=[];
+  nota_adicional?:string;
   mappedAcomps:any[]=[];
 
   constructor(
@@ -34,6 +36,7 @@ export class PedidoDetalleComponent {
             es=>{
               this.orden=es[0];
               this.productos = this.orden.productos;
+              console.log(this.productos);
             }
           );
         }
@@ -42,7 +45,7 @@ export class PedidoDetalleComponent {
   }
 
   formatearFecha(fecha: string) {
-    return this.datePipe.transform(fecha, 'dd-MM-yyyy HH:mm:ss');
+    return this.datePipe.transform(fecha, 'dd MMM YYYY - hh:mm:ss aaaa')?.toLowerCase();
   }
 
 
@@ -74,5 +77,27 @@ export class PedidoDetalleComponent {
     }, []);
 
     return this.mappedAcomps;
+  }
+
+  calcularNuevoPrecioProducto(precio_producto:any, acomps:any[], combos:any[]) {
+    let nuevoPrecio = precio_producto;
+
+    if (acomps) {
+      acomps.forEach(e => {
+        nuevoPrecio = nuevoPrecio + e.precio
+      });
+    }
+
+    if (combos) {
+      combos.forEach(e => {
+        nuevoPrecio = nuevoPrecio + e.precio
+      });
+    }
+    
+    return nuevoPrecio;
+  }
+
+  verNotaAdicional(nota_adicional:string) {
+    this.nota_adicional = nota_adicional;
   }
 }

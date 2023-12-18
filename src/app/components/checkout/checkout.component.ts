@@ -30,18 +30,17 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
   subtotal:number = 0;
   comision:number = 0;
   total:number = 0;
-  total_acomps:number = 0;
-  total_combos:number = 0;
 
   metodosPago:any[]=[];
   formasEntrega:any[]=[];
   lugares:any[]=[];
+  direccion:any = {};
   direcciones:any[]=[];
 
   id_forma_entrega:any;
   id_metodo_pago:any;
   lugar:any;
-  id_direccion:any;
+  id_direccion:any = 0;
   billete_pago:any;
   comprobante_pago:any;
 
@@ -53,6 +52,8 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
   puntos_descuento?:any;
   puntos_usados:number = 0;
   puntos_ganados:number = 0;
+  puntos_restantes?:number;
+  existPoints:boolean = false;
   descuento:number = 0;
 
   @ViewChildren('accordionItems') accordionItems: any;
@@ -64,6 +65,7 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
     private direccionService: DireccionesService,
     private ordenService: OrdenService,
     private clienteService: ClienteService,
+    private lugarService: LugarService,
     private ordenesSocket: OrdenesSocketService,
     private router: Router,
     taperService: TaperService,
@@ -74,6 +76,7 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
 
+    this.direccion.id_lugar = 0;
     this.ordenesSocket.conectar();
 
     this.id_usuario = sessionStorage.getItem('id_usuario');
@@ -88,8 +91,9 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
     this.getFormasEntrega();
     this.getMetodosPago();
     this.getDirecciones();
+    this.getLugares();
     this.obtenerPuntosDescuentoUsuario();
-
+    this.calcularPuntosGanados();
   }
 
   ngOnDestroy(): void {
@@ -115,6 +119,7 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
     })).subscribe(subtotal => {
       this.subtotal = subtotal + Math.round(this.taperService.taper.subtotal_taper);
       this.updateTotalOrden();
+      this.calcularPuntosGanados();
     });
   }
 
@@ -154,6 +159,7 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
       this.lugar = "";
       this.comision = 0;
       this.updateTotalOrden();
+      this.calcularPuntosGanados();
     }
   }
 
@@ -177,6 +183,7 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
       this.lugar = direccionSeleccionada.lugar;
       this.comision = direccionSeleccionada.comision;
       this.updateTotalOrden();
+      this.calcularPuntosGanados();
     }
   }
 
@@ -200,11 +207,12 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
         id_forma_entrega: parseInt(this.id_forma_entrega),
         billete_pago: this.billete_pago == "" ? null : this.billete_pago,
         cantidad_tapers: this.taperService.taper.cantidad_taper == 0 ? null : Math.round(this.taperService.taper.cantidad_taper),
-        puntos_canjeados: parseInt(this.puntos_usados.toString()),
+        puntos_canjeados: this.puntos_usados == 0 ? null : parseInt(this.puntos_usados.toString()),
         subtotal: this.subtotal - Math.round(this.taperService.taper.subtotal_taper), //Se hace la resta porque el subtotal ya incluye el subtotal de los tapers (linea 90)
-        //total_acomp: this.total_acomps, //Pendiente
-        //total_combo: this.total_combos, //Pendiente
+        //total_acomp: this.total_acomps,
+        //total_combo: this.total_combos,
         total_tapers: this.taperService.taper.subtotal_taper == 0 ? null : Math.round(this.taperService.taper.subtotal_taper),
+        descuento: this.descuento == 0 ? null : Number(this.descuento),
         total: this.total,
         comprobante_pago: this.comprobante_pago == "" ? null : this.comprobante_pago,
         puntos_ganados: this.puntos_ganados,
@@ -219,18 +227,15 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
 
         this.notification = 'Un nuevo pedido ha sido realizado';
         this.ordenesSocket.notificarNuevaOrdenPendiente(this.notification);
-        
-        for (let index = 0; index < this.productos.length; index++) {
-          this.carritoService.eliminarProductoCarrito(index)
-        }
 
         this.taperService.taper.cantidad_taper = 0;
         this.taperService.taper.subtotal_taper = 0;
         this.canjearPuntos();
+        this.vaciarCarrito();
 
         this.navigateToPedidoRealizado();
       });
-
+      
       
     }
     
@@ -276,15 +281,13 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
   }
 
   updateTotalOrden() {
-    this.total = (this.subtotal + this.comision) - this.descuento;
+    this.total = this.subtotal + this.comision;
 
     if (this.total < this.descuento) {
       this.total = 0;
+    } else {
+      this.total = this.total - this.descuento;
     }
-  }
-
-  findTaperIndex(): number {
-    return this.productos.findIndex(producto => producto.nombre_producto === 'Taper');
   }
 
   categorizarPorTipoAcomps(acomps:any[]) {
@@ -325,9 +328,13 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
   }
 
   isValidPointsForCanje() {
-    // El formulario no es válido, por lo que realizamos la validación manual de campos
     if (!this.puntos_descuento) {
       this.toastr.warning('Tienes que ingresar tus puntos');
+      return false;
+    }
+
+    if (this.puntos_descuento < 100) {
+      this.toastr.warning('Solo puedes canjear a partir de 100 puntos');
       return false;
     }
 
@@ -339,27 +346,51 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
     return true;
   }
 
-  aplicarPuntos() {
+  aplicarPuntosParaDescuento() {
     let idUsuario = parseInt(sessionStorage.getItem('id_usuario') ?? '');
 
     if (this.isValidPointsForCanje()) {
+      this.puntos_restantes = this.puntos_usuario! - this.puntos_descuento;
+      this.existPoints = true;
 
-      this.ordenService.aplicarPuntos(idUsuario, this.puntos_descuento!, this.total).subscribe({
+      this.ordenService.aplicarPuntosParaDescuento(idUsuario, this.puntos_descuento!).subscribe({
         next: (response) => {
           console.log(response);
           this.puntos_usados = this.puntos_descuento;
           this.descuento = response.descuento;
-          this.puntos_ganados = response.puntos_ganados;
           this.updateTotalOrden();
+          this.calcularPuntosGanados();
         },
         error: (e) => {
           this.toastr.error(e.error);
           this.cancelarAplicarPuntos();
           this.updateTotalOrden();
+          this.calcularPuntosGanados();
         }
         
       });
     }
+  }
+
+  calcularPuntosGanados() {
+
+    this.puntos_ganados = Math.floor(this.total);
+
+    /* Este codigo envia el total al backend y a través de un procedimiento se hace el mismo calculo de la linea 376 
+    Se comento porque podria ser ineficiente hacer muchas peticiones al backend, por tanto el calculo se puede hacer en el front
+    Se puede considerar usar el codigo comentado por un tema de seguridad, pero se puede hacer una validacion al momento de crear la orden*/
+    /*
+    this.ordenService.calcularPuntosGanados(this.total).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.puntos_ganados = response.puntos_ganados;
+        },
+        error: (e) => {
+          this.toastr.error(e.error);
+        }
+        
+    });
+    */
   }
 
   canjearPuntos() {
@@ -375,6 +406,44 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
     });
   }
 
+  registrarDireccion() {
+    if (this.isValidForm()) {
+      this.direccionService.registrarDireccion(this.direccion, this.id_usuario).subscribe(response => {
+        this.toastr.success('Dirección registrada correctamente');
+
+        this.id_direccion = response.data;
+
+        //Luego de obtener el id_direccion del response, se lista de nuevo las direcciones
+        this.getDirecciones();
+
+        // Obtener la direccion seleccionada y luego el lugar seleccionado
+        const direccionSeleccionada = this.direcciones.find(d => d.id_direccion === this.id_direccion);
+        console.log(direccionSeleccionada);
+
+        if (direccionSeleccionada) {
+          this.lugar = direccionSeleccionada.lugar;
+          this.comision = direccionSeleccionada.comision;
+          this.updateTotalOrden();
+          this.calcularPuntosGanados();
+        }
+
+        this.limpiar();
+      });
+    }
+  }
+
+  isValidForm(): boolean {
+    if (!this.direccion.direccion) {
+      this.toastr.warning('El campo Dirección es obligatorio');
+      return false;
+    }
+    if (!this.direccion.id_lugar) {
+      this.toastr.warning('El campo Referencia es obligatorio');
+      return false;
+    }
+    return true;
+  }
+
   validarSoloNumeros(cadena: string): boolean {
     const regexSoloNumeros = /^[0-9]+$/;
     return regexSoloNumeros.test(cadena);
@@ -385,5 +454,27 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
     this.puntos_usados = 0;
     this.descuento = 0;
     this.puntos_ganados = 0;
+    this.existPoints = false;
+    this.updateTotalOrden();
+    this.calcularPuntosGanados();
+  }
+
+  getLugares() {
+    this.lugarService.getLugares().subscribe(data => {
+      this.lugares = data;
+    });
+  }
+
+  onLocalidadSeleccionada() {
+    console.log('Lugar seleccionado:', this.lugar);
+  }
+
+  vaciarCarrito() {
+    this.carritoService.vaciarCarrito();
+  }
+
+  limpiar() {
+    this.direccion.direccion = '';
+    this.direccion.id_lugar = '';
   }
 }

@@ -28,3 +28,22 @@
     background-color: rgb(207, 6, 6);
     color: white;
 }
+
+.mensaje-puntos-restantes {
+    color: rgb(9, 39, 230);
+}
+
+.subtitle_direccion {
+    font-weight: 700;
+}
+
+.btn-process{
+    background-color: #fa393f;
+    border-color: #fa393f;
+    color: white;
+}
+
+.btn-process:hover{
+    background-color: #C42227;
+    border-color: #C42227;
+}

@@ -95,7 +95,7 @@
               </div>
               <div class="col-sm-6 form-group">
                 <label for="ch-referencia">Referencia:</label>
-                <select id="ch-referencia" class="custom-select custom-select-lg" name="id_lugar" [(ngModel)]="direccion.id_lugar" (change)="onLocalidadSeleccionada()">
+                <select id="ch-referencia" class="custom-select custom-select-lg" name="id_lugar" [(ngModel)]="direccion.id_lugar">
                     <option value="0" disabled>Escoge tu localidad</option>
                     <option value="{{l.id_lugar}}" *ngFor="let l of lugares">{{l.lugar}}</option>
                 </select>
@@ -110,7 +110,7 @@
               </div>
               <div class="col-sm-6 form-group">
                 <label for="ch-address">Dirección de entrega:</label>
-                <select id="ch-referencia" class="custom-select custom-select-lg" [(ngModel)]="id_direccion" (change)="onDireccionSeleccionada()">
+                <select #direccionSelect id="ch-referencia" class="custom-select custom-select-lg" [(ngModel)]="id_direccion" (change)="onDireccionSeleccionada()">
                   <option value="0" disabled>Escoge tu direccion:</option>
                   <option value="{{d.id_direccion}}" *ngFor="let d of direcciones">{{d.direccion}}</option>
                 </select>

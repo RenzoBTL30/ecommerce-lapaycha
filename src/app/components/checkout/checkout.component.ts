@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, interval, map, takeUntil, takeWhile, timer } from 'rxjs';
@@ -57,6 +57,7 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
   descuento:number = 0;
 
   @ViewChildren('accordionItems') accordionItems: any;
+  @ViewChild('direccionSelect') direccionSelect?: ElementRef;
 
   constructor (
     private carritoService: CarritoService,
@@ -411,23 +412,26 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
       this.direccionService.registrarDireccion(this.direccion, this.id_usuario).subscribe(response => {
         this.toastr.success('Dirección registrada correctamente');
 
+        // Asigna el ID de la dirección recién registrada
         this.id_direccion = response.data;
 
         //Luego de obtener el id_direccion del response, se lista de nuevo las direcciones
-        this.getDirecciones();
+        this.direccionService.getDireccionesPorUsuario(this.id_usuario).subscribe(data => {
+          this.direcciones = data;
 
-        // Obtener la direccion seleccionada y luego el lugar seleccionado
-        const direccionSeleccionada = this.direcciones.find(d => d.id_direccion === this.id_direccion);
-        console.log(direccionSeleccionada);
+          // Actualiza manualmente la referencia después de asignar el valor a id_direccion
+          // Si el "==" se cambia a "===" no funcionará, debido a que el === es estricto en los tipos de variable. Sucede porque el d.id_direccion es texto y el this.id_direccion es number
+          const direccionSeleccionada = this.direcciones.find(d => d.id_direccion == this.id_direccion);
 
-        if (direccionSeleccionada) {
-          this.lugar = direccionSeleccionada.lugar;
-          this.comision = direccionSeleccionada.comision;
-          this.updateTotalOrden();
-          this.calcularPuntosGanados();
-        }
+          if (direccionSeleccionada) {
+            this.lugar = direccionSeleccionada.lugar;
+            this.comision = direccionSeleccionada.comision;
+            this.updateTotalOrden();
+            this.calcularPuntosGanados();
+          }
+        });
 
-        this.limpiar();
+      this.limpiar();
       });
     }
   }
@@ -463,10 +467,6 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
     this.lugarService.getLugares().subscribe(data => {
       this.lugares = data;
     });
-  }
-
-  onLocalidadSeleccionada() {
-    console.log('Lugar seleccionado:', this.lugar);
   }
 
   vaciarCarrito() {

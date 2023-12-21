@@ -3,8 +3,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
-
-
+@import 'node_modules/ngx-bootstrap/datepicker/bs-datepicker';
+.bs-datepicker-container {
+    padding: 0px;
+  }
+  
+  
+ .theme-green .bs-datepicker-head{
+    background-color: #C42227 ;
+  }
+  
+ .theme-green .bs-datepicker-body table td span.selected, .theme-green .bs-datepicker-body table td.selected span, .theme-green .bs-datepicker-body table td span[class*=select-]:after, .theme-green .bs-datepicker-body table td[class*=select-] span:after {
+    background-color: #C42227;
+  }
+  :host ::ng-deep .form-group{
+    margin: 0px;
+  }
 .box-spinner {
     display: flex;
     flex-direction: row;

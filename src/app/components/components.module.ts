@@ -18,7 +18,8 @@ import { CambiarContraseniaComponent } from './usuario/cambiar-contrasenia/cambi
 import { PedidoDetalleComponent } from './usuario/pedido-detalle/pedido-detalle.component';
 import { PedidosCompletadosComponent } from './usuario/pedidos-completados/pedidos-completados.component';
 import { ViewPedidoRealizadoComponent } from './view-pedido-realizado/view-pedido-realizado.component';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 @NgModule({
   declarations: [
     InicioComponent,
@@ -41,7 +42,10 @@ import { ViewPedidoRealizadoComponent } from './view-pedido-realizado/view-pedid
     CommonModule,
     RouterModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    NgbModule,
+    BsDatepickerModule,
+
   ],
   exports: [
     InicioComponent

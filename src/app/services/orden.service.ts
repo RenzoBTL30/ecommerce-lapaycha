@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, catchError, take, throwError } from 'rxjs';
 import { apiURL } from './global';
+import * as moment from 'moment-timezone';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +35,19 @@ export class OrdenService {
     return this.http.get<any>(`${apiURL}/orden/buscar/porcliente/${id_usuario}`, {headers: this.agregarAuthorizationHeader()});
   }
 
-  getOrdenesByIdUsuarioAndStatus(id_usuario:number, estado:string): Observable<any> {
-    return this.http.get<any>(`${apiURL}/orden/buscar/porclienteestado/${id_usuario}/${estado}`, {headers: this.agregarAuthorizationHeader()});
+  getOrdenesByIdUsuarioAndStatus(id_usuario:number, estado:string, page?:number,size?:number,dates?:any): Observable<any> {
+  
+    const params={
+      page: page ?? 0,
+      size: size ?? 10,
+      fechaInicio: dates ? dates[0] : null,
+      fechaFin: dates ? dates[1] : null
+    }
+    if(dates){
+       params.fechaInicio=moment(dates[0]).format('YYYY-MM-DD')
+       params.fechaFin=moment(dates[1]).format('YYYY-MM-DD')
+    }
+    return this.http.get<any>(`${apiURL}/orden/buscar/porclienteestado/${id_usuario}/${estado}`, {headers: this.agregarAuthorizationHeader(),params:params});
   }
 
   getOrdenById(id_orden:number): Observable<any> {

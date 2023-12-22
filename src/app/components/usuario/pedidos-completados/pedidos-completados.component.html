@@ -5,7 +5,7 @@
   <div class="col-4">
     <input type="text" placeholder="dd/mm/yyyy - dd/mm/yyyy" class="form-control form-control-sm" bsDaterangepicker
     [bsValue]="date" 
-     [bsConfig]="{ isAnimated: true, showWeekNumbers: false }"  (bsValueChange)="onValueChange($event)"
+     [bsConfig]="{ isAnimated: true, showWeekNumbers: false, rangeInputFormat : 'DD/MM/YYYY', dateInputFormat: 'DD/MM/YYYY' }"  (bsValueChange)="onValueChange($event)"
      />
   </div>
 <button class="btn btn-icon" (click)="getOrdenesCompletadas()"><i class="cxi-search"></i></button>

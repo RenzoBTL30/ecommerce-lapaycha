@@ -2,6 +2,7 @@ import { AfterViewChecked, Component, ElementRef, EventEmitter, OnDestroy, OnIni
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, interval, map, takeUntil, takeWhile, timer } from 'rxjs';
+import { Cronometro } from 'src/app/models/cronometro';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { DireccionesService } from 'src/app/services/direcciones.service';
@@ -476,5 +477,70 @@ export class CheckoutComponent implements OnInit, OnDestroy  {
   limpiar() {
     this.direccion.direccion = '';
     this.direccion.id_lugar = '';
+  }
+
+  startTimer(id_orden:number) {
+    //let o const
+    let cronometro:Cronometro = new Cronometro();
+    cronometro.isRunning = true;
+    cronometro.intervalId = setInterval(() => {
+      cronometro.timer++;
+      this.saveTimerState(cronometro, id_orden);
+    }, 1000);
+  }
+  
+  reanudarTimer(id_orden: number) {
+    let cronometroData = localStorage.getItem(`crono_orden_${id_orden}`);
+    let cronometro = cronometroData ? JSON.parse(cronometroData) : null;
+  
+    if (cronometro && cronometro.isRunning) {
+      cronometro.intervalId = setInterval(() => {
+        cronometro.timer++;
+        this.saveTimerState(cronometro, id_orden);
+      }, 1000);
+    }
+  }
+  
+  saveTimerState(cronometro:Cronometro, id_orden:number) {
+    localStorage.setItem(`crono_orden_${id_orden}`, JSON.stringify({
+      intervalId: cronometro.intervalId,
+      timer: cronometro.timer,
+      isRunning: cronometro.isRunning
+    }));
+  }
+
+  stopTimer(id_orden:number) {
+    let cronometroData = localStorage.getItem(`crono_orden_${id_orden}`);
+    let cronometro = cronometroData ? JSON.parse(cronometroData) : null;
+
+    if (cronometro && cronometro.intervalId) {
+      clearInterval(cronometro.intervalId);
+      cronometro.intervalId = null;
+    }
+
+    localStorage.removeItem(`crono_orden_${id_orden}`);
+  }
+
+  mostrarTiempoTranscurrido(id_orden: number): string {
+    const cronometroData = localStorage.getItem(`crono_orden_${id_orden}`);
+    const cronometro = cronometroData ? JSON.parse(cronometroData) : null;
+  
+    if (cronometro) {
+      return this.formatTime(cronometro.timer);
+    } else {
+      return '00:00:00';
+    }
+  }
+  
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+  
+    return `${this.padZero(hours)}:${this.padZero(minutes)}:${this.padZero(remainingSeconds)}`;
+  }
+  
+  padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
   }
 }
